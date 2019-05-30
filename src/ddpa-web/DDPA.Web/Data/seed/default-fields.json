@@ -1,0 +1,562 @@
+[ // Collection----------------------
+  {
+    "name": "Data Number", //1
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Last Name", //2
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Collection Purpose", //3
+    "purpose": "",
+    "type": 5,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Data Owner", //4
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Collection Source", //5
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Customer Service",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Collection Medium", //6
+    "purpose": "Form of collection, i.e. Hard copy forms, Emails, Soft copy",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Customer Service",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "How is consent obtained?", //7
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Comment", //8
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //collection--------------------------
+  //Storage-------------------------------
+  {
+    "name": "First Name", //9
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": false
+  },
+  {
+    "name": "Onsite/Offsite", //10
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Onsite",
+        "description": ""
+      },
+      {
+        "name": "Offsite",
+        "description": ""
+      },
+      {
+        "name": "Both",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "External Party", //11
+    "purpose": "Stored from a source outside? Name the external party.",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Third Party Address", //12
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Storage", //13
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Database", //Electronic
+        "description": ""
+      },
+      {
+        "name": "Locked Cabinet", //Physical
+        "description": ""
+      },
+      {
+        "name": "Third Parties", //Outside
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Define Storage", //14
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Obligation & Contract are Obtained", //15
+    "purpose": "",
+    "type": 10,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Comment", //16
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //Storage--------------------------
+  //Use-------------------------------
+  {
+    "name": "Date of Birth (D.O.B.)", //17
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Purpose of Use", //18
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "For Employment",
+        "description": ""
+      },
+      {
+        "name": "Government Purposes",
+        "description": ""
+      },
+      {
+        "name": "Add data into database (reference)",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "User of Data", //19
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Access Data By", //20
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "IT",
+        "description": ""
+      },
+      {
+        "name": "Finance",
+        "description": ""
+      },
+      {
+        "name": "Accounting",
+        "description": ""
+      },
+      {
+        "name": "Marketing",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Comment", //21
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //Use------------------------
+  { //Disclosure------------------
+    "name": "Outside Singapore?", //22
+    "purpose": "Yes, if data has been transferred Outside Singapore. No, if not.",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Within Singapore",
+        "description": ""
+      },
+      {
+        "name": "Outside",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Transferred To", //23
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "External Party", //24
+    "purpose": "Transferred to External Parties outside Singapore.",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Purpose of Transfer", //25
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "For Employment",
+        "description": ""
+      },
+      {
+        "name": "Government Purposes",
+        "description": ""
+      },
+      {
+        "name": "Add data into database (reference)",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Mode of File Transfer", //26
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Email",
+        "description": ""
+      },
+      {
+        "name": "Fax",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Comment", //27
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //Disclosure-----------------
+  { //Retention/Archival-------------------
+    "name": "Retained in", //28
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "In-house",
+        "description": ""
+      },
+      {
+        "name": "Offsite",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Storage", //29
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Database", //Electronic
+        "description": ""
+      },
+      {
+        "name": "Locked Cabinet", //Physical
+        "description": ""
+      },
+      {
+        "name": "Third Parties", //Outside
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Retention Period in Years", //30
+    "purpose": "",
+    "type": 2,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Retention Period Justification", //31
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Comment", //32
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //Retention
+  { //Disposal
+    "name": "Disposal Method", //33
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Physical Shredding",
+        "description": ""
+      },
+      {
+        "name": "Electronic Cleanup Software",
+        "description": ""
+      },
+      {
+        "name": "Database Dump",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Reason for Disposal", //34
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true,
+    "fieldItem": [
+      {
+        "name": "Retention Period Due",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "name": "Comment", //35
+    "purpose": "",
+    "type": 9,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  }, //Disposal
+  {
+    "name": "Personal Contact Information", //36
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Family Background & Details", //37
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Physical Characteristics", //38
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Educational Qualifications", //39
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Financial Information", //40
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Medical Details/Health Information", //41
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Criminal Background/Past Offences", //42
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Transactional records containing personal data", //43
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Location", //44
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Photos & Video Footage", //45
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Computer Device ID", //46
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "NRIC number", //47
+    "purpose": "",
+    "type": 1,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": false
+  },
+  {
+    "name": "Storage Medium", //48
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Storage Location", //49
+    "purpose": "",
+    "type": 6,
+    "isdefault": true,
+    "isrequired": true,
+    "islifecycle": true
+  },
+  {
+    "name": "Obligation & Contract are Obtained", //50
+    "purpose": "",
+    "type": 10,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  },
+  {
+    "name": "Obligation & Contract are Obtained", //51
+    "purpose": "",
+    "type": 10,
+    "isdefault": true,
+    "isrequired": false,
+    "islifecycle": true
+  }
+]

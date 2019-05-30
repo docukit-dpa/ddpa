@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using static DDPA.Commons.Enums.DDPAEnums
+
+@{
+    ViewData["Title"] = "Field";
+    Dictionary<FieldType, string> fieldType_kv = new Dictionary<FieldType, string>
+    {
+        {FieldType.TextField, "Text" },
+        {FieldType.NumericField, "Numeric" },
+        {FieldType.MemoField, "Memo" },
+        {FieldType.ComboField, "Dropdown" },
+        {FieldType.Attachment, "Attachment" },
+        {FieldType.Textarea, "Textarea" },
+        {FieldType.Checkbox, "Checkbox" },
+    };
+
+    Dictionary<Classification, string> classification_kv = new Dictionary<Classification, string>
+    {
+        {Classification.Sensitive, "Sensitive" },
+        {Classification.Nonsensitive, "Non-sensitive" }
+    };
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/add-field.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/add-field.min.js"></script>
+    </environment>
+}
+
+@model AddFieldViewModel
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Add Field
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    FIELD DETAILS
+                                </div>
+                            </h4>
+                        </div>
+                        <form id="f_addfield" class="ui form" asp-controller="Maintenance" asp-action="AddField" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>&nbsp </label>
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Name *
+                                        </div>
+                                        <input asp-for="Name" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field" data-tooltip="Sensitive personal data refers to personal data which has a higher risk of adversely affecting the individual should it be compromised.">
+                                    <label>Sensitivity Level *</label>
+                                    <div class="ui selection dropdown">
+                                        <input type="hidden" asp-for="Classification" class="validate" required>
+                                        <div class="default text">Choose your Option</div>
+                                        <i class="dropdown icon"></i>
+                                        <div class="menu">
+                                            @foreach (Classification item in Enum.GetValues(typeof(Classification)))
+                                            {
+                                                <div class="item" data-value="@Convert.ToInt32(((Classification) Enum.Parse(typeof(Classification), item.ToString())))">
+                                                    @classification_kv[item]
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="one field">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Field Description *
+                                        </div>
+                                        <textarea asp-for="Purpose" type="textarea" class="validate" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ui divider"></div>
+                        <a asp-controller="Maintenance" asp-action="Field" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" form="f_addfield" class="ui right floated large green button">
+                            <i class="check icon"></i>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="pageMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

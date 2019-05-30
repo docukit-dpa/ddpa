@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using DDPA.Commons.Helper;
+@*@model DocumentViewModel*@
+
+@{
+    ViewData["Title"] = "Approval";
+    var resultMsg = TempData["resultMsg"] ?? "";
+    var isSuccess = TempData["isSuccess"] ?? "";
+    var userRole = @HttpContextAccessor.HttpContext.Session.GetString(SessionHelper.ROLES);
+    var hiddenUserRights = "";
+    var isUser = "0";
+    if (userRole == nameof(Role.USER))
+    {
+        ViewData["Title"] = "My Requests";
+        isUser = "1";
+        hiddenUserRights = "hidden";
+    }
+
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/approval.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/approval.min.js"></script>
+    </environment>
+    <script>
+        var resultMsg = "@resultMsg";
+        var isSuccess = "@isSuccess";
+    </script>
+
+}
+
+@*bulk approve modal*@
+<div id="approveModal" class="modal">
+    <div class="modal-content">
+        <h4>Proceed in approving these documents?</h4>
+        <p></p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="waves-effect waves-light btn red" onclick="approve();">PROCEED</button>
+    </div>
+</div>
+@*delete modal*@
+<main>
+    <div class="">
+        <div class="section">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card material-table">
+                        <div class="card-image card-noimg">
+                            <img src="~/images/title-bg.png">
+                            <span class="card-title">@ViewBag.Title</span>
+                        </div>
+                        <div class="card-content">
+                            <a href="#approveModal" id="btn_approve" class="modal-trigger waves-effect waves-light btn red right" style="visibility: @hiddenUserRights;">APPROVE</a>
+                            <table width="100%" id="approvalTable" class="stripe" data-table-url="@Url.Action("GetApprovalDocuments", "Approval")" data-table-url-edit="@Url.Action("UpdateField", "Maintenance")" data-table-url-items="@Url.Action("AddFieldItem", "Maintenance")" data-table-url-delete="@Url.Action("DeleteField", "Maintenance")" data-table-hidden-user-rights="@hiddenUserRights" is-user="@isUser">
+                                <thead class="thead-style">
+                                    <tr>
+                                        <th class="all" style="visibility: @hiddenUserRights;"><label><input type="checkbox" id="checkAll" /><span></span></label></th>
+                                        <th class="all">Department</th>
+                                        <th class="desktop">Data Number</th>
+                                        <th class="desktop">Data Set</th>
+                                        <th class="desktop">Details</th>
+                                        <th class="all">Logs</th>
+                                        @if (isUser == "1")
+                                        {
+                                            <th class="all">Status</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+

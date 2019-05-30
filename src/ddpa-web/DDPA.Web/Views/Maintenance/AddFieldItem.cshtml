@@ -1,0 +1,110 @@
+﻿@model AddFieldItemViewModel
+
+@{
+    ViewData["Title"] = ViewData["fieldName"] + " - Add Item";
+    var resultMsg = TempData["resultMsg"] ?? "";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/field-item.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/field-item.min.js"></script>
+    </environment>
+    <script>
+        var resultMsg = "@resultMsg";
+    </script>
+}
+    <main>
+        <div class="ui one column grid">
+            <div class="row">
+                <div class="column">
+                    <a asp-controller="Maintenance" asp-action="Dataset" class="ui small right floated compact labeled icon button" data-content="Back to User List" data-position="left center" data-variation="small">
+                        <i class="left arrow icon"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="six wide column">
+                    <h4 class="ui top attached inverted header">
+                        Add Item
+                    </h4>
+                    <div class="ui attached segment">
+                        <div class="ui container segment">
+                            <form id="f_addFieldItem" class="ui form" asp-controller="Maintenance" asp-action="AddFieldItem" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+                                <input asp-for="FieldId" type="hidden" value="@Model.FieldId" />
+                                <div class="one field">
+                                    <div class="field">
+                                        <div class="ui labeled input">
+                                            <div class="ui inverted grey label">
+                                                Name *
+                                            </div>
+                                            <input asp-for="Name" type="text" class="validate" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="one field">
+                                    <div class="field">
+                                        <div class="ui labeled input">
+                                            <div class="ui inverted grey label">
+                                                Description
+                                            </div>
+                                            <input asp-for="Description" type="text" class="validate" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider"></div>
+                                <a class="ui small button" style="visibility: hidden;">
+                                    <i class="ban icon"></i>
+                                </a>
+                                <button type="submit" form="f_addFieldItem" class="ui right floated small green button">Add</button>
+                            </form>
+                        </div>
+                        <div class="ui bottom attached message" id="pageMessage" hidden>
+                            <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                            <label></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ten wide column">
+                    <h4 class="ui top attached inverted header">
+                        @ViewData["fieldName"] - Items
+                    </h4>
+                    <div class="ui attached segment">
+                        <div class="ui container segment">
+                            <div class="ui horizontal divider">
+                                <h4 class="ui blue header">
+                                    <div class="content">
+                                        Added Fields
+                                    </div>
+                                </h4>
+                            </div>
+                            <table id="FieldTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetFieldItemsById", "Maintenance")" data-table-field-id="@Model.FieldId" data-table-url-update="@Url.Action("UpdateFieldItem", "Maintenance")" data-table-url-delete="@Url.Action("DeleteFieldItem", "Maintenance")">
+                                <thead>
+                                    <tr>
+                                        <th class="seven wide">Name</th>
+                                        <th class="seven wide">Description</th>
+                                        <th class="two wide">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                            <div class="ui divider"></div>
+                            <a asp-controller="Maintenance" asp-action="Dataset" class="ui small button" style="visibility: hidden;">
+                                <i class="ban icon"></i>
+                                Cancel
+                            </a>
+                            <a asp-controller="Maintenance" asp-action="LifeCycleField" class="ui right floated small green button">
+                                <i class="check icon"></i>
+                                Done
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>

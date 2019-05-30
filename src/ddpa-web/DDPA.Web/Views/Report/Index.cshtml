@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Report";
+}
+
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/data.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/data.min.js"></script>
+    </environment>
+}
+
+
+@model List<FieldViewModel>
+
+<main>
+    <div class="">
+        <div class="section">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card material-table">
+                        <div class="card-image card-noimg">
+                            <img src="~/images/title-bg.png">
+                            <span class="card-title">@ViewBag.Title</span>
+
+                        </div>
+                        <div class="card-content">
+                            &nbsp;
+                            <a asp-controller="Report" asp-action="CSV">
+                                <span class="waves-effect waves-light btn blue right">Download</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,36 @@
+{
+  "name": "devbridge-autocomplete",
+  "version": "1.4.9",
+  "homepage": "https://github.com/devbridge/jQuery-Autocomplete",
+  "authors": [
+    "Tomas Kirda"
+  ],
+  "description": "Autocomplete provides suggestions while you type into the text field.",
+  "main": "dist/jquery.autocomplete.js",
+  "keywords": [
+    "ajax",
+    "autocomplete"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec",
+    "scripts",
+    "content"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7"
+  },
+  "_release": "1.4.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.4.9",
+    "commit": "ca78cd68918b86177f197880f8eb852c6ac3b3a5"
+  },
+  "_source": "https://github.com/devbridge/jQuery-Autocomplete.git",
+  "_target": "v1.4.9",
+  "_originalSource": "devbridge-autocomplete",
+  "_direct": true
+}

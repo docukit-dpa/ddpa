@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Dataset List";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/dataset.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/dataset.min.js"></script>
+    </environment>
+}
+@*delete modal*@
+<div class="ui mini modal" id="deleteModal">
+    <div class="header">
+        Delete Dataset
+    </div>
+    <div class="content">
+        <p>Are you sure you want to delete this dataset?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="$('#deleteDataset_form').submit();">
+            <form id="deleteDataset_form" class="col s12" asp-controller="Maintenance" asp-action="DeleteDataset" method="post" role="form" autocomplete="off">
+                <input type="hidden" id="id" name="id" value="0" />
+            </form>
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+@*delete modal*@
+
+@*bulk delete modal*@
+<div class="ui tiny modal" id="bulkDeleteModal">
+    <div class="header">
+        Delete Datasets
+    </div>
+    <div class="content">
+        <p>Are you sure you want to delete these datasets?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="bulkDelete();">
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+@*bulk delete modal*@
+
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <div class="column">
+                    <div id="bulkDelete_btn" class="ui small right floated compact labeled icon red button" data-content="Delete Selected Datasets" data-position="left center" data-variation="small" onclick="$('#bulkDeleteModal').modal('show');">
+                        <i class="trash icon"></i>
+                        Delete
+                    </div>
+                    <a asp-controller="Maintenance" asp-action="AddDataset">
+                        <div class="ui small compact labeled icon blue button">
+                            <i class="plus icon"></i>
+                            Add New Data Set
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Data Set List
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_administration_dataSetList"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <table id="DatasetTable" class="ui structured small compact celled table" data-table-url="@Url.Action("GetDatasets", "Maintenance")" data-table-url-edit="@Url.Action("UpdateDataset", "Maintenance")" data-table-url-field="@Url.Action("AddFieldDataset", "Maintenance")" data-table-url-download="@Url.Action("DownloadDatasetExcel", "Maintenance")">
+                        <thead>
+                            <tr>
+                                <th class="one wide" rowspan="2">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" tabindex="0" id="checkAll">
+                                        <label></label>
+                                    </div>
+                                </th>
+                                <th class="seven wide center aligned" rowspan="2">Data Set Name</th>
+                                <th class="seven wide center aligned" colspan="4">Action</th>
+                            </tr>
+                            <tr class="center aligned">
+                                <th>Add Field</th>
+                                <th>Edit Data Sheet</th>
+                                @*<th>Download Excel</th>*@
+                                <th>Delete Data Sheet</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

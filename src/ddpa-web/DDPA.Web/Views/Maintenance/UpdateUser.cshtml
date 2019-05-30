@@ -1,0 +1,159 @@
+﻿@using DDPA.Commons.Results;
+@using DDPA.DTO;
+@{
+    ViewData["Title"] = "Update User";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/account.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/account.min.js"></script>
+    </environment>
+}
+
+@model UpdateUserViewModel
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Update User
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    USER DETAILS
+                                </div>
+                            </h4>
+                        </div>
+                        <form id="updateUser_form" class="ui form" asp-controller="Maintenance" asp-action="UpdateUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            First Name *
+                                        </div>
+                                        <input asp-for="FirstName" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Last Name *
+                                        </div>
+                                        <input asp-for="LastName" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Email *
+                                        </div>
+                                        <input asp-for="Email" type="email" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Username *
+                                        </div>
+                                        <input asp-for="UserName" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="three fields">
+                                <div class="field">
+                                    <label>Department *</label>
+                                    <div class="ui selection dropdown">
+                                        <input type="hidden" asp-for="DepartmentId" class="validate" required>
+                                        <div class="default text">Choose your Option</div>
+                                        <i class="dropdown icon"></i>
+                                        <div class="menu">
+                                            @foreach (DepartmentDTO department in (List<DepartmentDTO>)ViewData["departmentList"])
+                                            {
+                                                <div class="item" data-value="@department.Id">
+                                                    @department.Name
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Role *</label>
+                                    <div class="ui selection dropdown">
+                                        <input type="hidden" asp-for="Role" class="validate" required>
+                                        <div class="default text">Choose your Option</div>
+                                        <i class="dropdown icon"></i>
+                                        <div class="menu">
+                                            @foreach (string role in (List<string>)ViewData["roleList"])
+                                            {
+                                                <div class="item" data-value="@role">
+                                                    @role
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label>Type of Notification *</label>
+                                    <div class="ui selection dropdown">
+                                        <input type="hidden" asp-for="TypeOfNotification" class="validate" required>
+                                        <div class="default text">Choose your Option</div>
+                                        <i class="dropdown icon"></i>
+                                        <div class="menu">
+                                            @foreach (TypeOfNotification item in Enum.GetValues(typeof(TypeOfNotification)))
+                                            {
+                                                <div class="item" data-value="@item.ToString()">
+                                                    @item.ToString()
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui horizontal divider">
+                                <h4 class="ui blue header">
+                                    <div class="content">
+                                        MODULE ACCESS
+                                    </div>
+                                </h4>
+                            </div>
+                            <table id="ModuleAccess" name="Permissions" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetModuleRights", "Maintenance", new {id= Model.Id , role= Model.Role})">
+                                <thead>
+                                    <tr>
+                                        <th class="ten wide">Module</th>
+                                        <th class="two wide center aligned">View</th>
+                                        <th class="two wide center aligned">Add</th>
+                                        <th class="two wide center aligned">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <input type="hidden" asp-for="Permissions" />
+                        </form>
+                        <div class="ui divider"></div>
+                        <a asp-controller="Maintenance" asp-action="User" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" form="updateUser_form" class="ui right floated large green button">
+                            <i class="check icon"></i>
+                            Update
+                        </button>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="pageMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

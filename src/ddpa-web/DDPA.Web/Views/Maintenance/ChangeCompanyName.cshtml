@@ -1,0 +1,72 @@
+﻿@using DDPA.Commons.Results;
+@{
+    ViewData["Title"] = "Change Company Name";
+    var resultMsg = TempData["resultMsg"] ?? "";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/change-password.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/change-password.min.js"></script>
+    </environment>
+    <script>
+        var resultMsg = "@resultMsg";
+    </script>
+}
+
+@model ChangeCompanyInfoViewModel
+<main>
+    <div class="ui container flex-content">
+        <div class="column">
+            <div class="ui one column grid midimage">
+              <div class="sixteen wide column">
+                <img class="ui large centered image" src="~/images/logo.png">
+              </div>
+            </div>
+          </div>
+        <div class="column">
+            <div class="ui one column internally celled grid changepasssegment">
+                <div class="row">
+                    <div class="sixteen wide tablet eight wide computer centered column">
+                        <form id="f_changeCompanyInfo" class="ui small form" asp-controller="Maintenance" asp-action="ChangeCompanyName" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                            <div class="ui stacked segment">
+                                <h4 class="ui violet header ribbon label loginheader">Change Company Name</h4>
+                                <div class="field">
+                                    <label class="ui">Password</label>
+                                    <div class="ui left icon input">
+                                        <i class="lock icon"></i>
+                                        <input asp-for="Password" type="password" class="validate" placeholder="Password" autocomplete="new-password" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="ui">Company Name</label>
+                                    <div class="ui left icon input">
+                                        <i class="lock icon"></i>
+                                        <input asp-for="Name" type="text" class="validate" placeholder="Company Name" required />
+                                    </div>
+                                </div>
+                                <div class="ui buttons fluid">
+                                    <a asp-controller="Dashboard" asp-action="Index" class="ui button">
+                                        <i class="ban icon"></i>
+                                        Cancel
+                                    </a>
+                                    <div class="or"></div>
+                                    <button type="submit" form="f_changeCompanyInfo" class="ui blue button">
+                                        Save
+                                    </button>
+                                    @*<a href="dashboard.html" class="ui blue button">Save</a>*@
+                                </div>
+                            </div>
+                            <div class="ui bottom attached message" id="pageMessage" hidden>
+                                <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                                <label></label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

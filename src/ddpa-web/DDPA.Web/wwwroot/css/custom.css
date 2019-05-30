@@ -1,0 +1,343 @@
+/* Main Page Styles
+   ========================================================================== */
+
+body {
+	display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
+    font-weight: 300;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.page-footer.simple{
+	padding-top: 0px;
+}
+
+.page-footer .footer-copyright{
+  font-size: 15px;
+}
+
+nav ul li.active {
+  background-color: #4a148c;
+}
+
+.sidenav li.active {
+  background-color: #e1bee7;
+}
+
+.sidenav li > a:hover {
+  background-color: #e1bee7;
+}
+
+/* Card Styles
+   ========================================================================== */
+
+.card .card-image .card-title{
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  padding: 10px 15px 5px 24px;
+}
+
+.tabs .indicator {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background-color: #fff;
+  will-change: left, right;
+}
+
+.tabs.tabs-transparent.extendtab .indicator {
+  background-color: #2196f3;
+}
+
+.tabs.tabs-transparent .tab.disabled a,
+.tabs.tabs-transparent .tab.disabled a:hover {
+  color: rgba(255, 255, 255, 0.7);
+  cursor: not-allowed;
+}
+
+/* Tooltip
+   ========================================================================== */
+.material-tooltip {
+  background-color: #424242;
+}
+
+/* Table
+   ========================================================================== */
+table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+  background-color: #eeeeee;
+}
+
+/* Forms
+   ========================================================================== */
+
+.input-field {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.input-field > label {
+  color: #9e9e9e;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.input-field > label:not(.label-icon).active {
+  -webkit-transform: translateY(-12px) scale(0.8);
+          transform: translateY(-12px) scale(0.8);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+}
+
+.datepicker-date-display{
+  background-color: #2196f3; 
+}
+
+.datepicker-table td.is-today {
+  color: #2196f3;
+}
+
+.datepicker-table td.is-selected {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.datepicker-clear,
+.datepicker-today,
+.datepicker-done {
+  color: #2196f3;
+}
+
+.datepicker-cancel{
+  color: #ef5350;
+}
+
+.modalheader.nondatepicker{
+  color: #4a148c;
+  font-weight: 400;
+}
+
+.modal.nondatepicker{
+  width: 40%;
+}
+
+.toast {
+  background-color: #84ffff;
+  font-weight: 400;
+  color:#2b2b2b;
+}
+
+
+.logincard{
+  margin-top: 13%
+}
+
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+  border: 2px solid #2196f3;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #2196f3;
+}
+
+span.option {
+  color: red;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+  top: -4px;
+  left: -5px;
+  width: 12px;
+  height: 22px;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid #2196f3;
+  border-bottom: 2px solid #2196f3;
+  -webkit-transform: rotate(40deg);
+          transform: rotate(40deg);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform-origin: 100% 100%;
+          transform-origin: 100% 100%;
+}
+
+input:not([type]),
+input[type=text]:not(.browser-default),
+input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default),
+input[type=url]:not(.browser-default),
+input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default),
+input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=number]:not(.browser-default),
+input[type=search]:not(.browser-default),
+textarea.materialize-textarea {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  border-radius: 0;
+  outline: none;
+  height: 2.5rem;
+  width: 100%;
+  font-size: 14px;
+  margin: 0 0 5px 0;
+  padding: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  -webkit-transition: border .3s, -webkit-box-shadow .3s;
+  transition: border .3s, -webkit-box-shadow .3s;
+  transition: box-shadow .3s, border .3s;
+  transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s;
+}
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid #2196f3;
+  -webkit-box-shadow: 0 1px 0 0 #26a69a;
+          box-shadow: 0 1px 0 0 #26a69a;
+}
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: #2196f3;
+}
+
+/*-----------------AutoComplete-----------------*/
+.autocomplete-suggestions {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    background: #F8F8F8;
+    overflow: auto;
+    font-size: 16px;
+    color: black;
+    display: block;
+    padding: 10px 12px;
+    font-family: "Roboto", sans-serif;
+}
+
+.autocomplete-suggestion {
+    padding: 2px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.autocomplete-selected {
+    background: #F0F0F0;
+}
+
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #3399FF;
+}
+
+.autocomplete-group {
+    padding: 2px 5px;
+}
+
+    .autocomplete-group strong {
+        display: block;
+    }
+
+.ui-autocomplete {
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    background: #eee;
+}
+/*-----------------AutoComplete-----------------*/
+
+#eula-wrapper {
+    padding: 20px 5px 15px 5px;
+}
+
+.radio {
+    opacity: 0;
+    position: absolute;
+}
+
+label { display: inline-block }
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+label > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:4px solid transparent;
+}
+label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:4px solid #2196F3;
+}
+.divImage{
+    color:black;
+    font-size: 15px;
+}
+
+
+.easyPaginateNav a {
+    display: inline-block;
+    border-radius: 2px;
+    text-align: center;
+    vertical-align: top;
+    height: 30px;
+    color: #444;
+    display: inline-block;
+    font-size: 12px;
+    padding: 0 10px;
+    line-height: 30px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    align-items: center;
+}
+
+
+.easyPaginateNav a.current {
+    background-color: #4a148c;
+    color: white;
+}
+
+.easyPaginateBorder {
+    border-color: #2196F3;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.deletion-indicator {
+    background-color: #e2584a !important;
+    color: #fff;
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DDPA.Web</name>
+    </assembly>
+    <members>
+        <member name="M:DDPA.Web.Controllers.ApprovalController.GetRequestDocuments">
+            <summary>
+            Get the requested documents of either user or dept head.
+            Documents added, updated, or deleted by these role are needed an approval from higher roles
+            </summary>
+            
+            <returns>
+            The specific document for the respective user
+            </returns>
+        </member>
+        <member name="M:DDPA.Web.Controllers.ApprovalController.GetApprovalDocuments">
+            <summary>
+            Get the documents that needed approval of the current user.
+            </summary>
+            
+            <returns>
+            The specific document for the respective user.
+            </returns>
+        </member>
+        <member name="M:DDPA.Web.Controllers.ApprovalController.CountRequestAndApprovall">
+            <summary>
+            Count both the requested and needed-approval documents.
+            This counts will be displayed in either MyRequest or MyApproval page.
+            </summary>
+            
+            <returns>
+            A string separated by comma, with request count in the left, and approval count in the right.
+            ex: "3,5"
+            </returns>
+        </member>
+        <member name="T:DDPA.Web.Controllers.MaintenanceController">
+            <summary>
+            This Controller is for Administration module.
+            Administration is named Maintenance before.
+            Todo: Rename this Controller.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,127 @@
+﻿@model List<DashboardSummaryViewModel>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/dashboard.js"></script>
+        <script src="~/lib/jspdf/jspdf.debug.js"></script>
+        <script src="~/lib/chart.js/dist/chartjs-plugin-datalabels.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/dashboard.min.js"></script>
+        <script src="~/lib/jspdf/jspdf.min.js"></script>
+        <script src="~/lib/chart.js/dist/chartjs-plugin-datalabels.min.js"></script>
+    </environment>
+}
+
+<main>
+    <input type="hidden" id="userRole" value="@ViewBag.userRole" />
+    <input type="text" id="userDept" name="userDept" value="@ViewData["userDept"]" hidden />
+    <div class="ui three column stackable grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Data Set Owners
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dashboard_dataSetOwners"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <canvas id="dataSetPieChart" width="400" height="400" summary-url="@Url.Action("GetSummary", "Dashboard")"></canvas>
+                    <div class="ui divider"></div>
+                    <div class="ui small buttons center">
+                        <button class="ui teal button" id="datasetDownloadPDF"><i class="file pdf icon"></i>Download PDF</button>
+                        <div class="or"></div>
+                        <a asp-controller="Dashboard" asp-action="SummaryOfDatasetToCSV" class="ui blue button"><i class="file excel icon"></i>Export to CSV</a>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Storage
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dashboard_storage"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <!--ID of storage is 13-->
+                    <canvas id="storagePieChart" width="400" height="400"></canvas>
+                    <div class="ui divider"></div>
+                    <div class="ui small buttons center">
+                        <button class="ui teal button" id="storageDownloadPDF"><i class="file pdf icon"></i>Download PDF</button>
+                        <div class="or"></div>
+                        <a asp-controller="Dashboard" asp-action="SummaryOfStorageToCSV" class="ui blue button"><i class="file excel icon"></i>Export to CSV</a>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    External Parties
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dashboard_externalParties"]" data-position="top right">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <!--ID of external party is 24-->
+                    <canvas id="externalPartyPieChart" width="400" height="400"></canvas>
+                    <div class="ui divider"></div>
+                    <div class="ui small buttons center">
+                        <button class="ui teal button" id="externalPartyDownloadPDF"><i class="file pdf icon"></i>Download PDF</button>
+                        <div class="or"></div>
+                        <a asp-controller="Dashboard" asp-action="SummaryOfExternalPartyToCSV" class="ui blue button"><i class="file excel icon"></i>Export to CSV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="ui three column stackable grid">
+            <div class="row">
+                <div class="column">
+                </div>
+                <div class="column">
+                    <h4 class="ui top attached inverted header">
+                        @{ var strTemp = "Notes"; }
+                        @if (@ViewData["userDept"].ToString() != "")
+                        {
+                            strTemp = (@ViewData["userDept"].ToString()) + " - Notes";
+                        }
+                        @strTemp
+                        <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dashboard_issueRiskLevel"]" data-position="top left">
+                            <i class="question icon" style="margin-right:0px;"></i>
+                        </div>
+                    </h4>
+                    <div class="ui attached segment">
+                        <canvas id="IssueRiskPieChart" width="400" height="400"></canvas>
+                        <div class="ui divider"></div>
+                        <div class="ui small buttons center">
+                            <button class="ui teal button" id="issueRiskDownloadPDF"><i class="file pdf icon"></i>Download PDF</button>
+                            <div class="or"></div>
+                            <a asp-controller="Dashboard" asp-action="SummaryOfIssueRiskToCSV" class="ui blue button"><i class="file excel icon"></i>Export to CSV</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                </div>
+            </div>
+        </div>
+    @*}*@
+</main>
+
+<div id="LoginState" value="@ViewBag.showModal" hidden></div>
+<!--USER GUIDE IN RESOURCE MODAL-->
+<div class="ui mini modal" id="userGuideInfoModal">
+    <div class="header">
+        NOTE:
+    </div>
+    <div class="content">
+        <p>SEE USER GUIDE IN RESOURCE MODULE</p>
+    </div>
+    <div class="actions">
+        <div class="ui positive button">
+            Close
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@{
+    var strjs = "/js/" + ViewBag.statusName + ".js";
+    var strjsmin = "/js/" + ViewBag.statusName + ".min.js";
+
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="@strjs"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="@strjsmin"></script>
+    </environment>
+}
+@await Html.PartialAsync("_NavFieldView")

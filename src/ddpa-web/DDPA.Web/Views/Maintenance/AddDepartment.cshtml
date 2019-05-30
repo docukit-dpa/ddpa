@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using static DDPA.Commons.Enums.DDPAEnums
+
+@{
+    ViewData["Title"] = "Add Department";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/add-department.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/add-department.min.js"></script>
+    </environment>
+}
+
+@model AddDepartmentViewModel
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Add Department
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    DEPARTMENT DETAILS
+                                </div>
+                            </h4>
+                        </div>
+                        <form id="f_addDepartment" class="ui form" asp-controller="Maintenance" asp-action="AddDepartment" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Name *
+                                        </div>
+                                        <input asp-for="Name" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Description *
+                                        </div>
+                                        <input asp-for="Description" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ui divider"></div>
+                        <a asp-controller="Maintenance" asp-action="Department" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" form="f_addDepartment" class="ui right floated large green button">
+                            <i class="check icon"></i>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="pageMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

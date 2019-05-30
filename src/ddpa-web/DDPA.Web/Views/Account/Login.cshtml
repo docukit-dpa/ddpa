@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    var resultMsg = TempData["resultMsg"] ?? "";
+}
+
+@section scripts
+    {
+    <script>
+        var resultMsg = "@resultMsg";
+    </script>
+    <environment names="Development">
+        <script src="~/js/login.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/login.min.js"></script>
+    </environment>
+}
+
+@model LoginViewModel
+
+<main>
+    <div class="ui container flex-content">
+        <div class="ui one column grid">
+            <div class="column">
+                <div class="ui one column grid midimage">
+                    <div class="sixteen wide column">
+                        <img class="ui large centered image" src="~/images/logo.png">
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui two column middle aligned stackable internally celled grid loginsegment">
+                    <div class="row">
+                        <div class="sixteen wide tablet eight wide computer column">
+                            <form class="ui small form" id="f_login" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                                <div class="ui piled segment">
+                                    <h4 class="ui violet header ribbon label loginheader">Log-in to your account</h4>
+                                    <div class="field">
+                                        <label class="ui">Username</label>
+                                        <div class="ui left icon input">
+                                            <i class="user icon"></i>
+                                            <input asp-for="UserName" placeholder="Username" class="validate" required />
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="ui">Password</label>
+                                        <div class="ui left icon input">
+                                            <i class="lock icon"></i>
+                                            <input type="password" asp-for="Password" placeholder="Password" class="validate" required />
+                                        </div>
+                                    </div>
+                                    <button type="submit" form="f_login" class="ui large fluid violet submit button">Login</button>
+                                    @*<div class="ui divider"></div>
+                                    <a class="ui teal label">
+                                        <i class="undo icon"></i>
+                                        Reset Password
+                                    </a>*@
+                                    <div class="ui divider"></div>
+                                    <div class="ui bottom attached message" id="pageMessage" hidden>
+                                        <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                                        <label></label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="sixteen wide tablet eight wide computer column">
+                            <img class="ui centered rounded bordered image" src="~/images/promoimg.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

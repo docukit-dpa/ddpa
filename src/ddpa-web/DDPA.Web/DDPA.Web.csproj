@@ -1,0 +1,235 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+   <PropertyGroup>
+    <Copyright>Corelan Technologies</Copyright>
+    <AssemblyTitle>DDPA Web</AssemblyTitle>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>DDPA.Web</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>DDPA.Web</PackageId>
+    <UserSecretsId>aspnet-DMS.Web-c5f09039-af80-4400-9ab7-70be2424e7ae</UserSecretsId>
+    <RuntimeIdentifiers>win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+     <DocumentationFile></DocumentationFile>
+   </PropertyGroup>
+   <ItemGroup>
+     <Compile Remove="wwwroot\excel\**" />
+     <Content Remove="wwwroot\excel\**" />
+     <EmbeddedResource Remove="wwwroot\excel\**" />
+     <None Remove="wwwroot\excel\**" />
+   </ItemGroup>
+   <ItemGroup>
+     <Content Remove="wwwroot\%2a%2a" />
+   </ItemGroup>
+  <ItemGroup>
+    <None Update="wwwroot\**\*;Views\**\*;Areas\**\Views;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  
+   <ItemGroup>
+    <ProjectReference Include="..\..\ddpa-core\DDPA.Commons\DDPA.Commons.csproj" />
+    <ProjectReference Include="..\..\ddpa-repository\DDPA.SQL.Entities\DDPA.SQL.Entities.csproj" />
+    <ProjectReference Include="..\..\ddpa-repository\DDPA.SQL.Repositories\DDPA.SQL.Repositories.csproj" />
+    <ProjectReference Include="..\..\ddpa-service\DDPA.Service\DDPA.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.Validation" Version="1.0.0" />
+    <PackageReference Include="CsvHelper" Version="9.0.0" />
+    <PackageReference Include="EPPlus" Version="4.5.2.1" />
+    <PackageReference Include="ExcelDataReader" Version="3.4.2" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.4.2" />
+    <PackageReference Include="MailKit" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
+    <PackageReference Include="morelinq" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rc1-final" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc1-final" />
+    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc1-final" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="Serilog" Version="2.7.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="2.6.1" />
+    <PackageReference Include="Serilog.Sinks.Literate" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.6.362" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
+  </ItemGroup>
+
+  
+  <Target Name="PrecompileScript" BeforeTargets="BeforeBuild" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+    <Exec Command="dotnet bundle" /> 
+   <!-- <Exec Command="bower install" /> -->
+  </Target>
+
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
+   <!-- <Exec Command="bower install" /> -->
+   <Exec Command="dotnet bundle" />
+  </Target>
+  <ItemGroup>
+    <Content Update="Views\Account\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\Register.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\Update.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Approval\MyRequest.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Approval\MyApproval.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Approval\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Approval\ViewDetails.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Approval\_NavFieldView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dashboard\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\AddDataset.cshtml">
+	      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Issues.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\AddDepartment.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\AddFieldDataset.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\AddLifeCycleField.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\ChangeCompanyName.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\Dataset.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\UpdateDataset.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\UpdateDepartment.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\UpdateLifeCycleField.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\Department.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Data.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\DataList.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Resource\AddResource.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Resource\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Report\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\Field.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Maintenance\User.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Disposal.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Archival.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Transfer.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Usage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Storage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Collection.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Dataset\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Account\Login.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_SubModule.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_NavHeader.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_NavField.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Support\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\js\add-field.min.js">
+      <DependentUpon>add-field.js</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\js\dashboard.min.js">
+      <DependentUpon>dashboard.js</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\js\users.min.js">
+      <DependentUpon>users.js</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\Resource\User Guide.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\Resource\" />
+    <Folder Include="wwwroot\tempFolder\" />
+  </ItemGroup>
+</Project>

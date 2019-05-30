@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Life Cycle";
+}
+
+@{
+    var resultMsg = TempData["resultMsg"] ?? "";
+    var isSuccess = TempData["isSuccess"] ?? "";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/lifecycle-field.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/lifecycle-field.min.js"></script>
+    </environment>
+    <script>
+        var resultMsg = "@resultMsg";
+        var isSuccess = "@isSuccess";
+    </script>
+}
+
+<!--DELETE MODAL-->
+<div class="ui mini modal" id="deleteModal">
+    <div class="header">
+        Delete Field
+    </div>
+    <div class="content">
+        <p>Are you sure you want to delete this field?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="$('#deleteField_form').submit();">
+            <form id="deleteField_form" class="col s12" asp-controller="Maintenance" asp-action="DeleteLifeCycleField" method="post" role="form" autocomplete="off">
+                <input type="hidden" id="id" name="id" value="0" />
+            </form>
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
+<!--BULK DELETE MODAL-->
+<div class="ui tiny modal" id="bulkDeleteModal">
+    <div class="header">
+        Delete Fields
+    </div>
+    <div class="content">
+        <p>Are you sure you want to delete these fields?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="bulkDelete();">
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <div id="bulkDelete_btn" class="ui small right floated compact labeled icon red button" data-content="Delete Selected Fields" data-position="left center" data-variation="small" onclick="$('#bulkDeleteModal').modal('show');">
+                    <i class="trash icon"></i>
+                    Delete
+                </div>
+                <a href="/Maintenance/AddLifeCycleField">
+                    <div class="ui small compact labeled icon blue button" data-content="Add a New Field" data-position="right center" data-variation="small">
+                        <i class="plus icon"></i>
+                        Add Field
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Field List
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_administration_fieldList"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <table id="FieldTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetLifeCycleFields", "Maintenance")" data-table-url-edit="@Url.Action("UpdatelifeCycleField", "Maintenance")" data-table-url-items="@Url.Action("AddFieldItem", "Maintenance")" data-table-url-delete="@Url.Action("DeleteField", "Maintenance")">
+                        <thead>
+                            <tr>
+                                <th class="one wide">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" tabindex="0" id="checkAll">
+                                        <label></label>
+                                    </div>
+                                </th>
+                                <th>Default(?)</th>
+                                <th class="three wide">Life Cycle</th>
+                                <th class="three wide">Name</th>
+                                <th class="two wide">Type</th>
+                                <th class="two wide">Default?</th>
+                                <th class="two wide">Field Description</th>
+                                <th class="two wide">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

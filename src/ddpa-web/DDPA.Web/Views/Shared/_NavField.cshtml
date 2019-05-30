@@ -1,0 +1,547 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using DDPA.Resources;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@model DocumentViewModel
+@{
+    var submitUrl = Url.Action("UpdateCollection", "DDPA");
+    var nextUrl = string.Empty;
+    var backUrl = string.Empty;
+    var fieldName = "";
+
+    if (ViewBag.Title == "Data Collection")
+    {
+        if (Model.Id == 0)
+        {
+            nextUrl = Url.Action("Storage", "DDPA");
+        }
+        else
+        {
+            nextUrl = Url.Action("Storage", "DDPA", new { id = Model.Id });
+        }
+    }
+
+    if (ViewBag.Title == "Data Storage")
+    {
+        nextUrl = Url.Action("Usage", "DDPA", new { id = Model.Id });
+        backUrl = Url.Action("Collection", "DDPA", new { id = Model.Id });
+    }
+
+    if (ViewBag.Title == sharedLocalizer["title_usage"].ToString())
+    {
+        nextUrl = Url.Action("Transfer", "DDPA", new { id = Model.Id });
+        backUrl = Url.Action("Storage", "DDPA", new { id = Model.Id });
+    }
+
+    if (ViewBag.Title == sharedLocalizer["title_transfer"].ToString())
+    {
+        nextUrl = Url.Action("Archival", "DDPA", new { id = Model.Id });
+        backUrl = Url.Action("Usage", "DDPA", new { id = Model.Id });
+    }
+
+    if (ViewBag.Title == sharedLocalizer["title_archival"].ToString())
+    {
+        nextUrl = Url.Action("Disposal", "DDPA", new { id = Model.Id });
+        backUrl = Url.Action("Transfer", "DDPA", new { id = Model.Id });
+    }
+
+    if (ViewBag.Title == "Disposal")
+    {
+        nextUrl = Url.Action("DataList", "DDPA");
+        backUrl = Url.Action("Archival", "DDPA", new { id = Model.Id });
+    }
+
+    var addedFields = Model.Field.Where(x => x.IsDefault == false);
+    var defaultFields = Model.Field.Where(x => x.IsDefault == true);
+}
+<main>
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-image card-noimg">
+                            <img src="~/images/title-bg.png">
+                            <span class="card-title">@ViewBag.Title</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    @if (ViewBag.Title == "Data Collection" && Model.Id == 0)
+                                    {
+                                        <a href="#addDataset" onclick="reloaddataset()" class="waves-effect waves-light btn blue  modal-trigger">Add / Replace Dataset</a>
+                                    }
+                                    @*<a href="#addfield" onclick="updateFieldId('@Model.SubModuleId', '');" class="waves-effect waves-light btn blue  modal-trigger">Add Field</a>*@
+                                    @if (ViewBag.Title == "Data Collection" && Model.Id == 0)
+                                    {
+                                        <button type="submit" class="waves-effect waves-light btn blue" onclick="$('#excelFile').click();">Bulk Upload</button>
+                                        <form id="excelUpload" asp-controller="DDPA" asp-action="UploadExcelFile" method="post" role="form" enctype="multipart/form-data" asp-route-returnurl="@ViewData["ReturnUrl"]" autocomplete="off">
+                                            <input type="file" id="excelFile" name="excelFile" accept=".xls, .xlsx, .csv" hidden />
+                                        </form>
+                                    }
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <form enctype="multipart/form-data" id="f_DDPA" data-async data-document-edit="true" form-submit-url="@submitUrl" form-next-url="/DDPA/DataList" method="post" role="form" class="col s12" data-target="#modal-container" onsubmit="return false;" data-execute-onSuccess="" novalidate="novalidate">
+                                    <input id="docId" asp-for="Id" type="hidden" />
+                                    <input id="docSubModuleId" asp-for="SubModuleId" type="hidden" />
+                                    <input id="docStatus" asp-for="Status" type="hidden" />
+                                    <input id="docDatasetId" asp-for="DatasetId" type="hidden" />
+                                    <input id="buttonAction" asp-for="ButtonAction" type="hidden" />
+
+                                    @if (defaultFields.Count() > 0)
+                                    {
+                                        if (addedFields.Count() > 0 || (Model.FieldDataset.Count() > 0 && ViewBag.Title == "Data Collection"))
+                                        {
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <h5 class="sidebartitle">@ViewBag.Title Details</h5>
+                                                    <div class="divider"></div><br />
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (ViewBag.Title == "Data Collection")
+                                        {
+                                            <div class="row">
+                                                <div class="input-field col s8 offset-s2">
+                                                    <input id="docDataNumber" type="text" asp-for="DataNumber" class="validate" required />
+                                                    <label for="docDataNumber">Data Number <span style='color:red'>*</span></label>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row">
+                                                <div class="input-field col s8 offset-s2">
+                                                    <input id="docDataNumber" type="text" asp-for="DataNumber" disabled />
+                                                    <label for="docDataNumber">Data Number</label>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @foreach (var field in defaultFields)
+                                        {
+                                            var isRequired = field.IsRequired;
+                                            var reqHtml = String.Empty;
+                                            var reqField = String.Empty;
+
+                                            if (isRequired)
+                                            {
+                                                reqHtml = "<span style='color:red'>*</span>";
+                                                reqField = "required";
+                                            }
+
+                                            if (ViewBag.Title == sharedLocalizer["title_usage"].ToString() && field.Name == "Department")
+                                            {
+                                                fieldName = "Access Data By";
+                                            }
+                                            else
+                                            {
+                                                fieldName = field.Name;
+                                            }
+                                            if (field.Type.Equals(FieldType.TextField))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField)>
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.ComboField))
+                                            {
+                                                var container_item = field.Id + "container_item";
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="collection" onfocus="autoCompleteField('@field.Id')" @Html.Raw(reqField) novalidate>
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                        <div id="@container_item"></div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <a href="#addfielditem" onclick="updateFieldId('@field.Id', '@fieldName');" class="waves-effect waves-light btn btn-small blue tooltipped  modal-trigger" data-position="top" data-tooltip="Add New Option">
+                                                            <i class="material-icons">add</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.MemoField))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField)>
+                                                        <label for="@field.Id" data-error="This is required">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.Attachment))
+                                            {
+                                                <div class="input-field col s8 offset-s2">
+                                                    <div class="file-field input-field">
+                                                        <div class="btn btn-small">
+                                                            <span>@fieldName</span>
+                                                            <input type="file" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId">
+                                                        </div>
+                                                        <div class="file-path-wrapper">
+                                                            @*<input class="file-path validate collection" type="text" placeholder="Upload attachment" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId" />*@
+                                                            <input class="file-path collection" type="text" placeholder="Upload attachment" value="@field.Value" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.Textarea))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <textarea id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId" class="materialize-textarea validate collection" @Html.Raw(reqField)>@field.Value</textarea>
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.NumericField))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection numeric" @Html.Raw(reqField) onkeypress="return isNumber(event)">
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else if (field.Type.Equals(FieldType.Checkbox))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        @*<input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField)>
+                            <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>*@
+                                                        <label>
+                                                            <input type="checkbox" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId" class="validate collection" @Html.Raw(reqField) value="false" />
+                                                            <span>@fieldName @Html.Raw(reqHtml)</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <br />
+                                            }
+                                        }
+                                    }
+
+                                    @if (Model.FieldDataset.Count() > 0 && ViewBag.Title == "Data Collection")
+                                    {
+                                        <div id="DatasetView">
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <h5 class="sidebartitle">@Model.DatasetName</h5>
+                                                    <div class="divider"></div><br />
+                                                </div>
+                                            </div>
+
+                                            @foreach (var datasetField in Model.FieldDataset)
+                                            {
+                                                var isRequired = datasetField.Field.IsRequired;
+                                                var reqHtml = String.Empty;
+                                                var reqField = String.Empty;
+
+                                                if (isRequired)
+                                                {
+                                                    reqHtml = "<span style='color:red'>*</span>";
+                                                    reqField = "required";
+                                                }
+
+                                                if (ViewBag.Title == sharedLocalizer["title_usage"].ToString() && datasetField.Field.Name == "Department")
+                                                {
+                                                    fieldName = "Access Data By";
+                                                }
+                                                else
+                                                {
+                                                    fieldName = datasetField.Field.Name;
+                                                }
+                                                if (datasetField.Field.Type.Equals(FieldType.TextField))
+                                                {
+                                                    <div class="row">
+                                                        <div class="input-field col s8 offset-s2">
+                                                            <input id="@datasetField.Field.Id" name="@datasetField.Field.Id" type="text" fieldType="@datasetField.Field.Type" datasetid="@Model.DatasetId" value="@datasetField.Value" class="validate dataset" @Html.Raw(reqField)>
+                                                            <label for="@datasetField.Field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                if (datasetField.Field.Type.Equals(FieldType.ComboField))
+                                                {
+                                                    var container_item = datasetField.Field.Id + "container_item";
+                                                    <div class="row">
+
+                                                        <div class="input-field col s8 offset-s2">
+                                                            <input id="@datasetField.Field.Id" name="@datasetField.Field.Id" type="text" fieldType="@datasetField.Field.Type" datasetid="@Model.DatasetId" value="@datasetField.Value" class="validate dataset" onfocus="autoCompleteField('@datasetField.Field.Id')" @Html.Raw(reqField)>
+                                                            <label for="@datasetField.Field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                            <div id="@container_item"></div>
+                                                        </div>
+                                                        <div class="input-field col s2">
+                                                            <a href="#addfielditem" onclick="updateFieldId('@datasetField.Field.Id', '@fieldName');" class="waves-effect waves-light btn btn-small blue tooltipped  modal-trigger" data-position="top" data-tooltip="Add New Option">
+                                                                <i class="material-icons">add</i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                if (datasetField.Field.Type.Equals(FieldType.MemoField))
+                                                {
+                                                    <div class="row">
+                                                        <div class="input-field col s8 offset-s2">
+                                                            <input id="@datasetField.Field.Id" name="@datasetField.Field.Id" type="text" fieldType="@datasetField.Field.Type" datasetid="@Model.DatasetId" value="@datasetField.Value" class="validate dataset" @Html.Raw(reqField)>
+                                                            <label for="@datasetField.Field.Id" data-error="This is required">@fieldName @Html.Raw(reqHtml)</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                if (datasetField.Field.Type.Equals(FieldType.Attachment))
+                                                {
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <div class="file-field input-field">
+                                                            <div class="btn btn-small">
+                                                                <span>@fieldName</span>
+                                                                <input type="file" id="@datasetField.Field.Id" name="@datasetField.Field.Id" fieldType="@datasetField.Field.Type" datasetid="@Model.DatasetId">
+                                                            </div>
+                                                            <div class="file-path-wrapper">
+                                                                <input class="file-path validate dataset" type="text" placeholder="Upload attachment" id="@datasetField.Field.Id" name="@datasetField.Field.Id" fieldType="@datasetField.Field.Type" datasetid="@Model.DatasetId" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    }
+
+
+                                    @if (addedFields.Count() > 0)
+                                    {
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <h5 class="sidebartitle">Other Info</h5>
+                                                <div class="divider"></div><br />
+                                            </div>
+                                        </div>
+
+                                        @foreach (var field in addedFields)
+                                        {
+                                            var isRequired = field.IsRequired;
+                                            var reqHtml = String.Empty;
+                                            var reqField = String.Empty;
+
+                                            if (isRequired)
+                                            {
+                                                reqHtml = "<span style='color:red'>*</span>";
+                                                reqField = "required";
+                                            }
+
+                                            if (ViewBag.Title == sharedLocalizer["title_usage"].ToString() && field.Name == "Department")
+                                            {
+                                                fieldName = "Access Data By";
+                                            }
+                                            else
+                                            {
+                                                fieldName = field.Name;
+                                            }
+                                            if (field.Type.Equals(FieldType.TextField))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField)>
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            if (field.Type.Equals(FieldType.ComboField))
+                                            {
+                                                var container_item = field.Id + "container_item";
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" onfocus="autoCompleteField('@field.Id')" @Html.Raw(reqField)>
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                        <div id="@container_item"></div>
+                                                    </div>
+                                                    <div class="input-field col s2">
+                                                        <a href="#addfielditem" onclick="updateFieldId('@field.Id', '@fieldName');" class="waves-effect waves-light btn btn-small blue tooltipped  modal-trigger" data-position="top" data-tooltip="Add New Option">
+                                                            <i class="material-icons">add</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                            if (field.Type.Equals(FieldType.MemoField))
+                                            {
+                                                <div class="row">
+                                                    <div class="input-field col s8 offset-s2">
+                                                        <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@Model.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField)>
+                                                        <label for="@field.Id" data-error="This is required">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                            if (field.Type.Equals(FieldType.Attachment))
+                                            {
+                                                <div class="input-field col s8 offset-s2">
+                                                    <div class="file-field input-field">
+                                                        <div class="btn btn-small">
+                                                            <span>@fieldName</span>
+                                                            <input type="file" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId">
+                                                        </div>
+                                                        <div class="file-path-wrapper">
+                                                            <input class="file-path validate collection" type="text" placeholder="Upload attachment" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@Model.SubModuleId" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    }
+
+                                    <div class="row">
+                                        <div class="input-field col s8 offset-s2">
+                                            <button type="submit" id="submit_btn" form="f_DDPA" class="waves-effect waves-light btn blue right">Submit</button>
+                                            <p class="right">&nbsp;&nbsp;</p>
+                                            <button type="submit" id="save_btn" form="f_DDPA" class="waves-effect waves-light btn blue right">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        @if (ViewBag.ActiveMenu == "Collection" && Model.Id > 0)
+                        {
+                            <div class="card-action">
+                                <a href="@Url.Action("DataList", "DDPA")" class="waves-effect waves-light btn red">
+                                    Cancel
+                                </a>
+                                <a href="@nextUrl" class="waves-effect waves-light btn blue lighten-5 grey-text text-darken-4 right">
+                                    <i class="material-icons right">chevron_right</i>Next
+                                </a>
+                            </div>
+                        }
+                        @if (ViewBag.ActiveMenu != "Collection" && Model.Id > 0 && ViewBag.ActiveMenu != "Disposal")
+                        {
+                            <div class="card-action">
+                                <a href="@backUrl" class="waves-effect waves-light btn blue lighten-5 red-text text-darken-2">
+                                    <i class="material-icons left">chevron_left</i>Back
+                                </a>
+                                <a href="@nextUrl" class="waves-effect waves-light btn blue lighten-5 grey-text text-darken-4 right">
+                                    <i class="material-icons right">chevron_right</i>Next
+                                </a>
+                            </div>
+                        }
+                        @if (ViewBag.ActiveMenu == "Disposal" && Model.Id > 0)
+                        {
+                            <div class="card-action">
+                                <a href="@backUrl" class="waves-effect waves-light btn blue lighten-5 red-text text-darken-2 ">
+                                    <i class="material-icons left">chevron_left</i>Back
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Add Field Modal-->
+    <div id="addfield" class="modal nondatepicker  modal-fixed-footer" onload="reloadAddfielditem();" data-backdrop="static" data-keyboard="false">
+        <div class="modal-content">
+            <h4 class="modalheader nondatepicker card-title">Add Field</h4>
+            <div class="divider"></div><br />
+            <div class="row">
+                <form id="f_addField" novalidate="novalidate" class="col s12" asp-controller="Maintenance" asp-action="AddFieldModal" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+                    <input type="hidden" id="TempId" name="SubModuleId" />
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" id="FieldName" name="Name" class="validate required field" />
+                            <label for="FieldName">Name <span style="color:red">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col col s12">
+                            <select id="FieldType" name="Type" class="validate required field" asp-items="Html.GetEnumSelectList<FieldType>()">
+                                <option selected>Choose your option</option>
+                            </select>
+                            <label for="FieldType">Type</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close red-text text-darken-3 btn-flat left">Cancel</a>
+            <button type="submit" form="f_addField" class="waves-effect waves-light btn blue">Add</button>
+        </div>
+    </div>
+
+    <!--  Add Field Item Modal-->
+    <div id="addfielditem" class="modal nondatepicker  modal-fixed-footer" onload="reloadAddfielditem();" data-backdrop="static" data-keyboard="false">
+        <div class="modal-content">
+            <h4 class="modalheader nondatepicker card-title">Add Field Item - <span id="FieldTitle"></span></h4>
+            <div class="divider"></div><br />
+            <div class="row">
+                <form id="f_addFieldItem" novalidate="novalidate" class="col s12" asp-controller="Maintenance" asp-action="AddFieldItemModal" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+                    <input type="hidden" id="TempFieldId" name="FieldId" />
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" id="FieldItemName" name="Name" class="validate required field" />
+                            <label for="FieldItemName">Name <span style="color:red">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" id="FieldItemDescription" name="Description" class="validate field" />
+                            <label for="FieldItemDescription">Description</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close red-text text-darken-3 btn-flat left">Cancel</a>
+            <button type="submit" form="f_addFieldItem" class="waves-effect waves-light btn blue">Add</button>
+        </div>
+    </div>
+
+
+    <!--  Add Dataset Modal-->
+    <div id="addDataset" class="modal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-content">
+            <h4 class="modalheader card-title">Dataset</h4>
+            <div class="divider"></div><br />
+            <div class="row">
+                <form id="f_usedataset" asp-controller="DDPA" asp-action="Collection" method="get" role="form">
+                    <div id="easyPaginate" class="row">
+                        <div class="col 7 m3 s6 datasetDiv" onclick="selectedDataset('0');">
+                            <div id="0_div" class="card datasetBorder easyPaginateBorder">
+                                <input type="radio" name="datasetId" id="0" value="0" checked>
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <img src="~/images/tempimg-blank.png">
+                                </div>
+                                <div class="card-content truncate">
+                                    <span style="font-size:14px">Blank</span>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (DatasetViewModel dataset in Model.Datasets)
+                        {
+                            var divName = dataset.Id + "_div";
+                            <div class="col 7 m3 s6 datasetDiv" onclick="selectedDataset('@dataset.Id');">
+                                <div id="@divName" class="card datasetBorder">
+                                    <input type="radio" class="radio" name="datasetId" id="@dataset.Id" value="@dataset.Id" />
+                                    <div class="card-image waves-effect waves-block waves-light">
+                                        <img src="~/images/tempimg.png">
+                                    </div>
+                                    <div class="card-content truncate">
+                                        <span style="font-size:14px">@dataset.Name</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close red-text text-darken-3 btn-flat left">Cancel</a>
+            <button type="submit" form="f_usedataset" class="waves-effect waves-light btn blue">Use</button>
+        </div>
+    </div>
+</main>
+

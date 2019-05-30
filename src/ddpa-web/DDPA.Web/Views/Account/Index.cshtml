@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "This is Index of Account";
+}
+<h2>@ViewData["Title"]</h2>
+
+@model List<AccountViewModel>
+
+<table>
+    <thead>
+        <tr>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model)
+        {
+            <tr>
+                <td>@account.FirstName</td>
+                <td>@account.LastName</td>
+                <td>@account.Email</td>
+                <td><a asp-controller="Account" asp-action="Update" asp-route-id="@account.Id">Update</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

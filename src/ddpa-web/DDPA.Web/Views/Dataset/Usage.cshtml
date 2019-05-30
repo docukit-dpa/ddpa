@@ -1,0 +1,19 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using DDPA.Resources;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@{
+    ViewData["Title"] = sharedLocalizer["title_usage"].ToString();
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/collection.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/collection.min.js"></script>
+    </environment>
+}
+
+@await Html.PartialAsync("_NavField")

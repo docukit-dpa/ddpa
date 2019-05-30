@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DDPA.SQL.Entities;
+@inject SignInManager<ExtendedIdentityUser> SignInManager
+
+<!-- DDPA UI v2 -->
+@if (SignInManager.IsSignedIn(User) && ViewBag.Title != "Login")
+{
+    var submodule = new List<SubModuleViewModel>();
+    <div class="ui fixed medium inverted menu">
+        <a href="#" class="header item">
+            <img class="logo" src="~/images/logo-icon-inverted.png">
+        </a>
+        <div class="item">
+            <strong>DOCUKIT DATA PROTECTION APP</strong>
+        </div>
+        <div class="right menu">
+            @{
+                var url = "";
+                var moduleDisplay = "";
+            }
+            @if (ViewBag.Modules != null)
+            {
+                @foreach (var module in ViewBag.Modules)
+                {
+                    moduleDisplay = module.Display;
+                    var moduleClass = "item";
+                    var disableModule = "";
+                    if ((@ViewBag.userRole == "ADMINISTRATOR") || (@ViewBag.userRole == "DPO"))
+                    {
+                        if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == @module.Name.ToUpper())
+                        {
+
+                            moduleClass = "active violet item";
+                            submodule = module.SubModule;
+                        }
+                        if ((@ViewBag.LoginState == "userSetup" && @module.Name.ToUpper() != "MAINTENANCE") || (@ViewBag.LoginState == "changePass" ))
+                        {
+                            module.Url = "#";
+                            disableModule = "style=cursor:not-allowed";
+                        }
+
+                        var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                        <a href="@module.Url" class="@moduleClass" @disableModule>
+                            @moduleDisplay
+                            @if (module.Name == "Approval")
+                            {
+                                <div class=" ui red horizontal label totalCount hidden"></div>
+                            }
+                        </a>
+                    }
+                    else
+                    {
+                        @foreach (var uRights in ViewBag.UserRights)
+                        {
+                            if ((uRights.ModuleName.ToUpper() == @module.Name.ToUpper() && @uRights.View == 1))
+                            {
+                                url = @module.Url;
+                                //change maintenance url if role is user or dept head
+                                if ((@ViewBag.userRole == "USER" || @ViewBag.userRole == "DEPTHEAD") && @module.Name.ToUpper() == "MAINTENANCE")
+                                {
+                                    url = "/Maintenance/Field";
+
+                                }
+
+                                if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == @module.Name.ToUpper())
+                                {
+                                    var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                                    <a href="@url" class="active violet item">
+                                        @moduleDisplay
+                                        @if (module.Name == "Approval")
+                                        {
+                                            <div class=" ui red horizontal label totalCount hidden"></div>
+                                        }
+                                    </a>
+                                    submodule = module.SubModule;
+                                }
+                                else
+                                {
+                                    var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                                    <a href="@url" class="item">
+                                        @moduleDisplay
+                                        @if (module.Name == "Approval")
+                                        {
+                                            <div class=" ui red horizontal label totalCount hidden"></div>
+                                        }
+                                    </a>
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            <div class="ui simple dropdown item">
+                <img class="ui avatar image username" src="~/images/userinverted.png">
+                <span class="username">@ViewBag.FirstName @ViewBag.LastName</span><i class="dropdown icon"></i>
+                <div class="menu">
+                    @if (@ViewBag.userRole == nameof(Role.DPO))
+                    {
+                        <form asp-area="" asp-controller="Maintenance" asp-action="ChangeCompanyName" method="get" id="f_changeCompanyName"></form>
+                        <a class="item" onclick="document.getElementById('f_changeCompanyName').submit();">Change Company Name</a>
+                    }
+                    <form asp-area="" asp-controller="Maintenance" asp-action="ChangePasswordUser" method="get" id="f_changepass"></form>
+                    <a class="item" onclick="document.getElementById('f_changepass').submit();">Change Password</a>
+                    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="f_logout"></form>
+                    <a class="item" onclick="document.getElementById('f_logout').submit();">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

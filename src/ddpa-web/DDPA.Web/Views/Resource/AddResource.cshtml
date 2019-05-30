@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using static DDPA.Commons.Enums.DDPAEnums
+
+@{
+    ViewData["Title"] = "Add Resource";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/add-resource.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/add-resource.min.js"></script>
+    </environment>
+}
+
+@model AddResourceViewModel
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Add Resource
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    FIELD DETAILS
+                                </div>
+                            </h4>
+                        </div>
+                        <form enctype="multipart/form-data" method="post" id="addresource_form" name="addresource_form" class="ui form" asp-controller="Resource" asp-action="AddResource" role="form" asp-route-returnurl="@ViewData["ReturnUrl"]" autocomplete="off" novalidate="novalidate">
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Type of Document *
+                                        </div>
+                                        <input asp-for="TypeOfDocument" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Name of Document *
+                                        </div>
+                                        <input asp-for="NameOfDocument" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="one field">
+                                <div class="field">
+                                    <input type="file" id="file" name="file" accept=".pdf" required>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ui divider"></div>
+                        <a asp-controller="Resource" asp-action="Index" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" form="addresource_form" class="ui right floated large green button" id="submitButton">
+                            <i class="check icon"></i>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="pageMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+

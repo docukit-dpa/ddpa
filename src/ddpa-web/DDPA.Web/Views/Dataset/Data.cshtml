@@ -1,0 +1,844 @@
+﻿@using DDPA.DTO;
+@using static DDPA.Commons.Enums.DDPAEnums
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/issues.js"></script>
+        <script src="~/js/collection.js"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/issues.min.js"></script>
+        <script src="~/js/collection.min.js"></script>
+    </environment>
+}
+@*@await Html.PartialAsync("_NavField")*@
+
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using DDPA.Resources;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> sharedLocalizer
+
+@model List<DocumentViewModel>
+@{
+    ViewData["Title"] = "Data Sets";
+    var fieldName = "";
+    var ctr = 1;
+    var state = Model.FirstOrDefault().State.ToString();
+    var requestType = Model.FirstOrDefault().RequestType;
+    var reworkOption = (requestType == RequestType.Delete) ? "disabled" : "";
+    var disabledTag = String.Empty;
+    var dSetId = Model.FirstOrDefault().Id;
+    var buttonView = "";
+
+    //todo: remove when bulk upload is working
+    buttonView = "none;";
+    if (dSetId != 0)
+    {
+        buttonView = "none;";
+    }
+}
+@if (((ViewBag.userAction == "View") || (ViewBag.userAction == "Process")) && ((dSetId != 0) && (state == "Pending")))
+{
+    disabledTag = "disabled";
+}
+@***************@
+@* Life Cycle  *@
+@***************@
+<input type="hidden" id="userRole" name="userRole" value="@ViewBag.userRole" />
+<input type="hidden" id="dropdownFieldId" name="dropdownFieldId" value="" />
+
+<div class="ui one column grid">
+    <div class="row">
+        <div class="column">
+            <div id="btnAddDSet">
+                <button onclick="$('#addDataset').modal('show')" class="ui small compact floated icon blue button" data-content="Add / Replace Dataset" data-position="right center" data-variation="small" style="display: none;">
+                    <i class="plus icon"></i>
+                    Add / Replace Dataset
+                </button>
+            </div>
+            <a id="btnAddIssue" onclick="addIssue(@Model.FirstOrDefault().Id);" class="ui small compact labeled icon blue button modal-trigger" data-content="Add a New Issue" data-position="right center" data-variation="small">
+                <i class="plus icon"></i>
+                Add Note
+            </a>
+            <a href="/Dataset/Datalist" class="ui right floated small compact button" data-content="Go back to Data List" data-position="left center" data-variation="small">
+                <i class="arrow left icon"></i>
+                Data List
+            </a>
+            <button id="btnUpload" type="submit" onclick="$('#excelFile').click();" class="ui teal right floated small compact button" style="display: @buttonView">
+                <i class="upload icon"></i>
+                Bulk Upload
+            </button>
+            <form id="excelUpload" asp-controller="Dataset" asp-action="UploadExcelFile" method="post" role="form" enctype="multipart/form-data" asp-route-returnurl="@ViewData["ReturnUrl"]" autocomplete="off">
+                <input type="text" id="deptId" name="deptId" value="@Model.FirstOrDefault().DepartmentId" hidden />
+                <input type="file" id="excelFile" name="excelFile" accept=".xls, .xlsx, .csv" hidden />
+            </form>
+        </div>
+    </div>
+</div>
+<div class="ui one column grid" id="lifeCycle">
+    <div class="row">
+        <div class="column">
+            <h4 class="ui top attached inverted header" id="divTitle">
+                Data Collection
+            </h4>
+            <div class="ui attached segment">
+                <div class="ui container segment">
+                    <div class="ui horizontal divider">
+                        <h4 class="ui blue header">
+                            <div class="content" id="divDetails">
+                                DATA COLLECTION DETAILS
+                            </div>
+                        </h4>
+                    </div>
+                    <form enctype="multipart/form-data" id="f_DDPA" data-async data-document-edit="true" form-submit-url="/Dataset/UpdateCollection" form-next-url="/Dataset/DataList" method="post" role="form" class="ui form" data-target="#modal-container" onsubmit="return false;" data-execute-onSuccess="" novalidate="novalidate">
+                        @foreach (DocumentViewModel doc in Model)
+                        {
+                            var docStatus = @doc.Status.ToString();
+
+                            var addedFields = @doc.Field.Where(x => x.IsDefault == false);
+                            var defaultFields = @doc.Field.Where(x => x.IsDefault == true);
+                            var divStart = String.Empty;
+                            var divEnd = String.Empty;
+
+                            var localizerId = "localizer_" + docStatus.ToLower();
+                            <input type="hidden" id="@localizerId" value="@SharedLocalizer["table_tp_dataSet_" + docStatus.ToLower()]" />
+                            <input id="docId" asp-for="@doc.Id" type="hidden" />
+                            <input id="docSubModuleId" asp-for="@doc.SubModuleId" type="hidden" />
+                            <input id="docStatus" asp-for="@doc.Status" type="hidden" />
+                            <input id="docDatasetId" asp-for="@doc.DatasetId" type="hidden" />
+                            <input id="buttonAction" asp-for="@doc.ButtonAction" type="hidden" />
+                            <input id="docDepartmentId" asp-for="@doc.DepartmentId" type="hidden" />
+
+                            <div id=@docStatus class="tabcontent" name="tabcontent">
+                                @if (@Model.FirstOrDefault().Id == 0)
+                                {
+                                    divStart = "<div class='two fields'>";
+                                    @Html.Raw(divStart)
+                                    <div class="field">
+                                        <div class="ui labeled input">
+                                            <div class="ui inverted grey label">
+                                                <label for="docDatasetName">Data Set Name</label>
+                                            </div>
+                                            <input id="docDatasetName" type="text" asp-for="@doc.DatasetName" disabled />
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    divStart = "<div class='two fields'>";
+                                    @Html.Raw(divStart)
+                                    <div class="field">
+                                        <div class="ui labeled input">
+                                            <div class="ui inverted grey label">
+                                                <label for="docDatasetName">Data Set Name</label>
+                                            </div>
+                                            <input id="docDatasetName" type="text" asp-for="@doc.DatasetName" disabled />
+                                        </div>
+                                    </div>
+                                }
+                                @{ctr = 2;}
+                                @foreach (var field in defaultFields)
+                                {
+                                    var isRequired = field.IsRequired;
+                                    var reqHtml = String.Empty;
+                                    var reqField = String.Empty;
+                                    divStart = String.Empty;
+                                    divEnd = String.Empty;
+                                    @if ((ctr % 2) != 0)
+                                    {
+                                        divStart = "<div class='two fields'>";
+                                    }
+                                    @Html.Raw(divStart)
+                                    if (docStatus == sharedLocalizer["title_usage"].ToString() && field.Name == "Department")
+                                    {
+                                        fieldName = "Access Data By";
+                                    }
+                                    else
+                                    {
+                                        fieldName = field.Name;
+                                    }
+                                    if (field.Type.Equals(FieldType.TextField))
+                                    {
+                                        <div class="field" data-tooltip="@field.Purpose">
+                                            <div class="ui labeled input">
+                                                <div class="ui inverted grey label">
+                                                    <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                </div>
+                                                <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField) @disabledTag>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.ComboField))
+                                    {
+                                        var values = new List<string>();
+                                        var hiddenText = "hiddenText_" + @field.Id;
+                                        var menu = "menu_" + @field.Id;
+                                        var container_item = field.Id + "container_item";
+                                        var dropdown_id = "dropdown_" + @field.Id;
+                                        var selected_id = "selected_" + @field.Id;
+                                        var prev_id = "prev_" + @field.Id;
+                                        var selected = field.Value;
+
+                                        if (!String.IsNullOrEmpty(field.Value))
+                                            values = field.Value.Split(',').ToList();
+
+                                        <input type="hidden" id="@selected_id" value="@selected" class="s_search">
+                                        <input type="hidden" id="@prev_id" value="@selected">
+                                        <div class="field" data-tooltip="@field.Purpose">
+                                            <div class="ui labeled input">
+                                                <div class="ui labeled action input">
+                                                    <div class="ui inverted grey label">
+                                                        <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                    <select class="ui fluid search selection dropdown collection" multiple="multiple" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" onkeyup="autocompleteitem('@field.Id')" onchange="changeItems(@field.Id);"></select>
+                                                    <a href="#addfielditem" onclick="updateFieldId('@field.Id', '@fieldName'); $('#dropdownFieldId').attr('value',@field.Id);addFieldItemButton.disabled = false;" class="ui icon button modal-trigger" data-position="top center" data-tooltip="Add New Option" @disabledTag>
+                                                        <i class="plus icon"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="ui labeled input" style="position:absolute;">
+                                                <div class="ui inverted grey label" style="visibility:hidden;">
+                                                    <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                </div>
+                                                <div style="background-color:red" id="@container_item"></div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.MemoField))
+                                    {
+                                        <div class="field" data-tooltip="@field.Purpose">
+                                            <div class="ui labeled input">
+                                                <div class="ui inverted grey label">
+                                                    <label for="@field.Id" data-error="This is required">@fieldName @Html.Raw(reqHtml)</label>
+                                                </div>
+                                                <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField) @disabledTag>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.Attachment))
+                                    {
+                                        <div class="input-field col s8 offset-s2">
+                                            <div class="file-field input-field">
+                                                <div class="btn btn-small">
+                                                    <span>@fieldName</span>
+                                                    <input type="file" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path collection" type="text" placeholder="Upload attachment" value="@field.Value" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" @disabledTag />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.NumericField))
+                                    {
+
+                                        <div class="field" data-tooltip="@field.Purpose">
+                                            <div class="ui labeled input">
+                                                <div class="ui inverted grey label">
+                                                    <label for="@field.Id">@fieldName @Html.Raw(reqHtml)</label>
+                                                </div>
+                                                <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection numeric" @Html.Raw(reqField) onkeypress="return isNumber(event)" @disabledTag>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.Checkbox))
+                                    {
+                                        var chk = (@field.Value == "true") ? "checked" : "";
+                                        <div class="field" data-tooltip="@field.Purpose">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" class="validate collection" @Html.Raw(reqField) value="@field.Value" @disabledTag @chk />
+                                                <label>
+                                                    <span>@fieldName @Html.Raw(reqHtml)</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (field.Type.Equals(FieldType.Textarea))
+                                    {
+                                        if (@fieldName != "Comment")
+                                        {
+                                            <div class="field">
+                                                <label for="@field.Id" class="ui label">@fieldName @Html.Raw(reqHtml)</label>
+                                                <textarea rows="2" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" class="collection" @Html.Raw(reqField) @disabledTag>@field.Value</textarea>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            ctr--;
+                                        }
+                                    }
+                                    @if ((ctr % 2) == 0)
+                                    {
+                                        divEnd = "</div>";
+                                    }
+                                    @Html.Raw(divEnd)
+                                    ctr++;
+                                }
+                                <!--Other Information-->
+                                @if (addedFields.Count() > 0)
+                                {
+                                    @foreach (var field in addedFields)
+                                    {
+                                        var isRequired = field.IsRequired;
+                                        var reqHtml = String.Empty;
+                                        var reqField = String.Empty;
+                                        var addedFieldName = "";
+                                        divStart = String.Empty;
+                                        divEnd = String.Empty;
+                                        @if ((ctr % 2) != 0)
+                                        {
+                                            divStart = "<div class='two fields'>";
+                                        }
+                                        @Html.Raw(divStart)
+                                        if (isRequired)
+                                        {
+                                            reqHtml = "<span style='color:red'>*</span>";
+                                            reqField = "required";
+                                        }
+
+                                        if (ViewBag.Title == sharedLocalizer["title_usage"].ToString() && field.Name == "Department")
+                                        {
+                                            addedFieldName = "Access Data By";
+                                        }
+                                        else
+                                        {
+                                            addedFieldName = field.Name;
+                                        }
+
+                                        if (field.Type.Equals(FieldType.TextField))
+                                        {
+                                            <div class="field" data-tooltip="@field.Purpose">
+                                                <div class="ui labeled input">
+                                                    <div class="ui inverted grey label">
+                                                        <label for="@field.Id">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                    <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField) @disabledTag>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (field.Type.Equals(FieldType.Textarea))
+                                        {
+                                            if (@addedFieldName != "Comment")
+                                            {
+                                                <div class="field">
+                                                    <label for="@field.Id" class="ui label">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                    <textarea rows="2" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" class="collection" @Html.Raw(reqField) @disabledTag>@field.Value</textarea>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                ctr--;
+                                            }
+                                        }
+
+                                        else if (field.Type.Equals(FieldType.ComboField))
+                                        {
+                                            var values = new List<string>();
+                                            var hiddenText = "hiddenText_" + @field.Id;
+                                            var menu = "menu_" + @field.Id;
+                                            var container_item = field.Id + "container_item";
+                                            var dropdown_id = "dropdown_" + @field.Id;
+                                            var selected_id = "selected_" + @field.Id;
+                                            var selected = field.Value;
+
+                                            if (!String.IsNullOrEmpty(field.Value))
+                                                values = field.Value.Split(',').ToList();
+
+                                            <input type="hidden" id="@selected_id" value="@selected" class="s_search">
+                                            <div class="field" data-tooltip="@field.Purpose">
+                                                <div class="ui labeled input">
+                                                    <div class="ui labeled action input">
+                                                        <div class="ui inverted grey label">
+                                                            <label for="@field.Id">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                        </div>
+                                                        <select class="ui fluid search selection dropdown collection" multiple="multiple" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" onkeyup="autocompleteitem('@field.Id')" onchange="changeItems(@field.Id);"></select>
+                                                        <a href="#addfielditem" onclick="updateFieldId('@field.Id', '@addedFieldName'); $('#dropdownFieldId').attr('value',@field.Id);" class="ui icon button modal-trigger" data-position="top center" data-tooltip="Add New Option" @disabledTag>
+                                                            <i class="plus icon"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="ui labeled input" style="position:absolute;">
+                                                    <div class="ui inverted grey label" style="visibility:hidden;">
+                                                        <label for="@field.Id">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                    <div style="background-color:red" id="@container_item"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (field.Type.Equals(FieldType.MemoField))
+                                        {
+                                            <div class="field">
+                                                <div class="ui labeled input">
+                                                    <div class="ui inverted grey label">
+                                                        <label for="@field.Id" data-error="This is required">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                    <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection" @Html.Raw(reqField) @disabledTag>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (field.Type.Equals(FieldType.Attachment))
+                                        {
+                                            <div class="field">
+                                                <div class="ui labeled input">
+                                                    <div class="ui inverted grey label">
+                                                        <div class="btn btn-small">
+                                                            <span>@addedFieldName</span>
+                                                            <input type="file" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId @disabledTag">
+                                                        </div>
+                                                    </div>
+                                                    <input class="file-path validate dataset" type="text" placeholder="Upload attachment" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" @disabledTag />
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (field.Type.Equals(FieldType.NumericField))
+                                        {
+
+                                            <div class="field" data-tooltip="@field.Purpose">
+                                                <div class="ui labeled input">
+                                                    <div class="ui inverted grey label">
+                                                        <label for="@field.Id">@addedFieldName @Html.Raw(reqHtml)</label>
+                                                    </div>
+                                                    <input id="@field.Id" name="@field.Id" type="text" fieldType="@field.Type" submoduleid="@doc.SubModuleId" value="@field.Value" class="validate collection numeric" @Html.Raw(reqField) onkeypress="return isNumber(event)" @disabledTag>
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (field.Type.Equals(FieldType.Checkbox))
+                                        {
+                                            var chk = (@field.Value == "true") ? "checked" : "";
+                                            <div class="field" data-tooltip="@field.Purpose">
+                                                <div class="ui checkbox">
+                                                    <input type="checkbox" id="@field.Id" name="@field.Id" fieldType="@field.Type" submoduleid="@doc.SubModuleId" class="validate collection" @Html.Raw(reqField) value="@field.Value" @disabledTag @chk />
+                                                    <label>
+                                                        <span>@addedFieldName @Html.Raw(reqHtml)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                        if (ctr % 2 == 0)
+                                        {
+                                            divEnd = "</div>";
+                                        }
+                                        @Html.Raw(divEnd)
+                                        ctr++;
+                                    }
+                                }
+                                @if ((ctr - 1) % 2 != 0)
+                                {
+                                    divEnd = "</div>";
+                                    @Html.Raw(divEnd)
+                                }
+
+                                <!--End of Other Info-->
+                                <!--Start Template-->
+                                <!--Datasets Field-->
+                                @if (doc.FieldDataset.Count() > 0 && docStatus == "Collection")
+                                {
+                                    <div class="ui horizontal divider">
+                                        <h4 class="ui blue header">
+                                            <div class="content">
+                                                @doc.DatasetName.ToUpper()
+                                            </div>
+                                        </h4>
+                                    </div>
+
+                                    <div class="content">
+                                        <div class="description">
+                                            <div class="ui attached segment">
+                                                <table id="logsTable" class="ui small compact celled table" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="six wide">Name</th>
+                                                            <th class="four wide">Sensitivity Level</th>
+                                                            <th class="six wide">Purpose</th>
+                                                        </tr>
+                                                        @if (doc.FieldDataset.Count > 0)
+                                                        {
+                                                            @foreach (var datasetField in doc.FieldDataset)
+                                                            {
+                                                                <tr role="row">
+                                                                    <td class=" desktop, tablet">@datasetField.Field.Name</td>
+                                                                    <td class=" desktop, tablet">
+                                                                        @{
+                                                                            if (Convert.ToInt32(datasetField.Field.Classification) == 1)
+                                                                            {
+                                                                                @:Non-sensitive
+                                                                            }
+                                                                            else if (Convert.ToInt32(datasetField.Field.Classification) == 2)
+                                                                            {
+                                                                                @:Sensitive
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                    <td class=" desktop, tablet">@datasetField.Field.Purpose</td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (doc.DatasetName != null && doc.FieldDataset.Count() == 0 && docStatus == "Collection")
+                                {
+                                    <div class="ui horizontal divider">
+                                        <h4 class="ui blue header">
+                                            <div class="content">
+                                                @doc.DatasetName.ToUpper()
+                                            </div>
+                                        </h4>
+                                    </div>
+
+                                    <div class="content">
+                                        <div class="description">
+                                            <div class="ui attached segment">
+                                                <table id="logsTable" class="ui small compact celled table" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="six wide">Name</th>
+                                                            <th class="four wide">Sensitivity Level</th>
+                                                            <th class="six wide">Purpose</th>
+                                                        </tr>
+                                                        <tr class="odd">
+                                                            <td valign="top" colspan="6" class="dataTables_empty center aligned">
+                                                                No data available in table
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <!--End Template-->
+                            </div>
+                            //end of div content
+                            var test = defaultFields.Where(x => x.Name == "Comment");
+                            if (@fieldName == "Comment")
+                            {
+                                <div id=@docStatus class="tabcontent" name="tabcontent">
+                                    <div class="ui horizontal divider">
+                                        <h4 class="ui blue header">
+                                            <div class="content">
+                                                Comments
+                                            </div>
+                                        </h4>
+                                    </div>
+                                    <div class="field">
+                                        <textarea rows="2" id="@test.First().Id" name="@test.First().Id" fieldType="@test.First().Type" submoduleid="@doc.SubModuleId" class="collection" @disabledTag>@test.First().Value</textarea>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+                        <div class="ui divider"></div>
+                        <a href="/Dataset/Datalist" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" id="submit_btn" form="f_DDPA" class="ui right floated large blue button" @disabledTag>
+                            @{var btnLabel = "Submit";}
+                            @if (ViewBag.userRole == nameof(Role.DPO))
+                            {
+                                btnLabel = "Publish";
+                            }
+                            @btnLabel
+                        </button>
+                        @if ((requestType != RequestType.Edit && state != "Approved") || disabledTag == "disabled")
+                        {
+                            <button type="submit" id="save_btn" form="f_DDPA" class="ui right floated large green button" @disabledTag>
+                                <i class="save icon"></i>
+                                Save as Draft
+                            </button>
+                        }
+
+                        @if (ViewBag.userAction == "Process")
+                        {
+                            <a id="btnReworkDset" onclick="reworkDSet(@Model.FirstOrDefault().Id);" class="ui right floated large red button modal-trigger">
+                                Rework
+                            </a>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@***************@
+@* Issue Table *@
+@***************@
+<div class="ui one column grid" id="Issues">
+    <div class="row">
+        <div class="column">
+            <h4 class="ui top attached inverted header">
+                Notes
+                <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dataSet_notesPerDoc"]" data-position="top left">
+                    <i class="question icon" style="margin-right:0px;"></i>
+                </div>
+            </h4>
+            <div class="ui attached segment">
+                <table id="tbl_issueTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetIssues", "Dataset", new {id= Model.FirstOrDefault().Id})">
+                    <thead>
+                        <tr class="center">
+                            <th>Data Set Name</th>
+                            <th>Department</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Assigned To</th>
+                            <th>Action Taken</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@***************@
+@*    MODAL    *@
+@***************@
+@*Add DaataSet modal*@
+<div id="addDataset" class="ui longer modal">
+    <div class="header">
+        Data Sets
+    </div>
+    <div class="scrolling content">
+        <h4 class="ui horizontal divider header">
+            Choose Dataset
+        </h4>
+        <form id="f_usedataset" asp-controller="Dataset" asp-action="Data" method="get" role="form">
+            @if (ViewBag.userRole == nameof(Role.DPO) || ViewBag.userRole == nameof(Role.ADMINISTRATOR))
+            {
+                <div class="field">
+                    <label>Department *</label>
+                    <div class="ui selection dropdown">
+                        <input type="hidden" id="modalDepartmentId" name="modalDepartmentId" onchange="" />
+                        <div class="default text" id="modalDepartmentDefaultText">Choose your Option</div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            @foreach (DepartmentDTO department in (List<DepartmentDTO>)ViewData["departmentList"])
+                            {
+                                <div class="item" data-value="@department.Id">
+                                    @department.Name
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            <input type="hidden" name="datasetId" id="datasetId" />
+            <table id="datasetsTable" class="ui definition compact table" style="width:100%" data-table-url="@Url.Action("GetDatasets", "Maintenance")"></table>
+        </form>
+        <div class="ui bottom attached message" id="dataSetModalMessage" hidden>
+            <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+            <label></label>
+        </div>
+    </div>
+    <div class="actions">
+        <a href="#" class="ui red deny tiny button">
+            Cancel
+        </a>
+        <a asp-controller="Dataset" asp-action="Data" class="ui tiny button" id="skipButton">
+            Skip
+        </a>
+        <button type="submit" form="f_usedataset" id="datasetSubmitButton" class="ui blue tiny button disabled">Use</button>
+    </div>
+</div>
+
+@*Add AddField modal*@
+<div class="ui tiny modal" id="addfielditem">
+    <div class="header">
+        <h4 class="modalheader">Add Field Item - <span id="FieldTitle"></span></h4>
+    </div>
+    <div class="content">
+        <form id="f_addFieldItem" novalidate="novalidate" class="ui form" asp-controller="Maintenance" asp-action="AddFieldItemModal" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" onsubmit="addFieldItemButton.disabled = true; return true;">
+            <input type="hidden" id="TempFieldId" name="FieldId" />
+            <div class="one field">
+                <div class="field" id="field_name">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            Name *
+                        </div>
+                        <input type="text" id="FieldItemName" name="Name" class="validate" />
+                    </div>
+                </div>
+            </div>
+            <div class="one field">
+                <div class="field">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            Description
+                        </div>
+                        <input type="text" id="FieldItemDescription" name="Description" class="validate" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="ui bottom attached message" id="fieldItemModalMessage" hidden>
+            <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+            <label></label>
+        </div>
+    </div>
+    <div class="actions">
+        <button class="ui negative button right">Cancel</button>
+        <button type="submit" form="f_addFieldItem" class="ui blue left button" id="addFieldItemButton" name="addFieldItemButton">Add</button>
+    </div>
+</div>
+@*Add Issues modal*@
+<div class="ui tiny modal" id="addIssue">
+    <div class="header">
+        <h4 class="modalheader">Add Note</h4>
+    </div>
+    <div class="content">
+        <form id="f_addIssue" novalidate="novalidate" class="ui form" asp-controller="Dataset" asp-action="AddIssue" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+            <input id="DocId" name="DocId" type="hidden" />
+            <div class="sixteen wide field" id="aDescription">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Description  *
+                    </div>
+                    <input type="text" id="Description" name="Description" class="validate"/>
+                </div>
+            </div>
+
+            <div class="sixteen wide field" id="aDate">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Date  *
+                    </div>
+                    <input type="date" id="Date" name="Date" class="validate" />
+                </div>
+            </div>
+            <div class="sixteen wide field" id="aAssignedTo">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Assigned to  *
+                    </div>
+                    <input type="text" id="AssignedTo" name="AssignedTo" class="validate" />
+                </div>
+            </div>
+            <div class="sixteen wide field" id="aAction">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Action *
+                    </div>
+                    <input type="text" id="Action" name="Action" class="validate" />
+                </div>
+            </div>
+            <div class="sixteen wide field" id="aStatus">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Status *
+                    </div>
+                    <select class="validate" id="Status" name="Status">
+                        <option value="" class="default text">Choose your Option</option>
+                        <option value="Open">Open</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ui bottom attached message" id="IssueModalMessage" hidden>
+                <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                <label></label>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button class="ui negative button right">Cancel</button>
+        <button type="submit" form="f_addIssue" id="addIssueButton" class="ui blue left button">Add</button>
+    </div>
+</div>
+
+@*Rework Modal*@
+<div class="ui tiny modal" id="reworkDataset">
+    <div class="header">
+        <h4>Proceed these documents for rework?</h4>
+    </div>
+    <div class="content">
+        <h4>Comments:<span style="color:white"> * </span></h4>
+
+        <form id="reworkDoc" novalidate="novalidate" class="ui form" asp-controller="Approval" asp-action="ReworkDocument" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+            <input type="hidden" id="TempId" name="DocId" value="@Model.FirstOrDefault().Id" />
+            <textarea rows="2" id="Comment" name="Comment" class="validate required field"></textarea>
+        </form>
+        <div class="ui bottom attached message" id="reworkCommentMessage" hidden>
+            <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+            <label></label>
+        </div>
+    </div>
+    <div class="actions">
+        <button class="ui negative button right">Cancel</button>
+        <button type="submit" form="reworkDoc" class="ui blue left button" id="commentProceedBtn">Proceed</button>
+    </div>
+</div>
+
+@*Edit Issues modal*@
+<div class="ui tiny modal" id="editIssue">
+    <div class="header">
+        <h4 class="modalheader">Edit Note</h4>
+    </div>
+    <div class="content">
+        <form id="f_editIssue" novalidate="novalidate" class="ui form" asp-controller="Dataset" asp-action="EditIssue" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off">
+            <input id="eid" name="id" type="hidden" />
+            <input id="eDocId" name="DocId" type="hidden" />
+            <div class="sixteen wide field" id="eDescField">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Description  *
+                    </div>
+                    <input type="text" id="eDescription" name="Description" class="validate" />
+                </div>
+            </div>
+            <div class="sixteen wide field">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        Date  *
+                    </div>
+                    <input type="date" id="eDate" name="Date" class="validate required field" />
+                </div>
+            </div>
+            <div class="sixteen wide field" id="eAssignedToField">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        <label for="AssignedTo">Assigned To<span style="color:white"> *</span></label>
+                    </div>
+                    <input type="text" id="eAssignedTo" name="AssignedTo" class="validate required field" />
+                </div>
+            </div>
+            <div class="sixteen wide field" id="eActionField">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        <label for="Action">Action<span style="color:white"> *</span></label>
+                    </div>
+                    <input type="text" id="eAction" name="Action" class="validate required field" />
+                </div>
+            </div>
+            <div class="sixteen wide field">
+                <div class="ui labeled input">
+                    <div class="ui inverted grey label">
+                        <label for="Status">Status<span style="color:white"> *</span></label>
+                    </div>
+                    <select class="validate required field" id="eStatus" name="Status">
+                        <option value="Open">Open</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ui bottom attached message" id="editIssueModalMessage" hidden>
+                <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                <label></label>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <button class="ui negative button right">Cancel</button>
+        <button id ="editIssueButton" type="submit" form="f_editIssue" class="ui blue left button">Save</button>
+    </div>
+</div>

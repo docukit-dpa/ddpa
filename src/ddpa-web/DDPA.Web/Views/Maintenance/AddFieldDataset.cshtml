@@ -1,0 +1,85 @@
+﻿@model DatasetViewModel
+
+@{
+    ViewData["Title"] = "Dataset - Add Field";
+    var resultMsg = TempData["resultMsg"] ?? "";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/dataset-field.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/dataset-field.min.js"></script>
+    </environment>
+    <script>
+        var resultMsg = "@resultMsg";
+    </script>
+}
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <a asp-controller="Maintenance" asp-action="Dataset" class="ui small right floated compact labeled icon button" data-content="Back to User List" data-position="left center" data-variation="small">
+                    <i class="left arrow icon"></i>
+                    Back
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui two column grid">
+        <div class="row">
+            <div class="seven wide column">
+                <h4 class="ui top attached inverted header">
+                    Available Fields
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <table id="AvailFieldTable" class="ui small compact celled table" style="width:100%" data-table-available-url="@Url.Action("GetAvailableField", "Maintenance")" data-table-dataset-id="@Model.Id" data-table-add-url="@Url.Action("AddFieldToDataset", "Maintenance")">
+                            <thead>
+                                <tr>
+                                    <th class="twelve wide">Name</th>
+                                    <th class="four wide center aligned">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="nine wide column">
+                <h4 class="ui top attached inverted header">
+                    @TempData["dataSetName"]
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    Added Fields
+                                </div>
+                            </h4>
+                        </div>
+                        <table id="CurrentFieldTable" class="ui small compact celled table" style="width:100%" data-table-current-url="@Url.Action("GetCurrentField", "Maintenance")" data-table-delete-url="@Url.Action("DeleteDatasetField", "Maintenance")">
+                            <thead>
+                                <tr>
+                                    <th class="fourteen wide">Name</th>
+                                    <th class="two wide center aligned">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <div class="ui divider"></div>
+                        <a asp-controller="Maintenance" asp-action="Dataset" class="ui small button" style="visibility: hidden;">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <a asp-controller="Maintenance" asp-action="Dataset" class="ui right floated small green button">
+                            <i class="check icon"></i>
+                            Done
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

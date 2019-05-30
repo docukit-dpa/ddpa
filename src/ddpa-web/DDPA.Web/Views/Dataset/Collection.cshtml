@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Data Collection";
+    ViewData["ActiveMenu"] = "Collection";
+}
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/collection.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/collection.min.js"></script>
+    </environment>
+}
+
+@await Html.PartialAsync("_NavField")

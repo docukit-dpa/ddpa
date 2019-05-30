@@ -1,0 +1,506 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+    {
+        "outputFileName": "wwwroot/js/maintenance.min.js",
+        "inputFiles": [
+            "wwwroot/js/maintenance.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/collection.min.js",
+        "inputFiles": [
+            "wwwroot/js/collection.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/data.min.js",
+        "inputFiles": [
+            "wwwroot/js/data.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/custom.min.js",
+        "inputFiles": [
+            "wwwroot/js/custom.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    //{
+    //    "outputFileName": "wwwroot/js/materialize.min.js",
+    //    "inputFiles": [
+    //        "wwwroot/js/materialize.js"
+    //    ],
+    //    // Optionally specify minification options
+    //    "minify": {
+    //        "enabled": true,
+    //        "renameLocals": true
+    //    },
+    //    // Optinally generate .map file
+    //    "sourceMap": false
+    //},
+    {
+        "outputFileName": "wwwroot/framework/semantic.min.js",
+        "inputFiles": [
+            "wwwroot/framework/semantic.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/custom-datatables.min.js",
+        "inputFiles": [
+            "wwwroot/js/custom-datatables.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/field.min.js",
+        "inputFiles": [
+            "wwwroot/js/field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/field-item.min.js",
+        "inputFiles": [
+            "wwwroot/js/field-item.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/dataset.min.js",
+        "inputFiles": [
+            "wwwroot/js/dataset.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/dataset-field.min.js",
+        "inputFiles": [
+            "wwwroot/js/dataset-field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/users.min.js",
+        "inputFiles": [
+            "wwwroot/js/users.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/css/custom.min.css",
+        "inputFiles": [
+            "wwwroot/css/custom.css"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    //{
+    //    "outputFileName": "wwwroot/css/materialize.min.css",
+    //    "inputFiles": [
+    //        "wwwroot/css/materialize.css"
+    //    ],
+    //    // Optionally specify minification options
+    //    "minify": {
+    //        "enabled": true,
+    //        "renameLocals": true
+    //    },
+    //    // Optinally generate .map file
+    //    "sourceMap": false
+    //},
+    {
+        "outputFileName": "wwwroot/framework/semantic.min.css",
+        "inputFiles": [
+            "wwwroot/framework/semantic.css"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/init.min.js",
+        "inputFiles": [
+            "wwwroot/js/init.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/ajax-form.min.js",
+        "inputFiles": [
+            "wwwroot/js/ajax-form.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/site.min.js",
+        "inputFiles": [
+            "wwwroot/js/site.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/css/custom-datatables.css",
+        // An array of relative input file paths. Globbing patterns supported
+        "inputFiles": [
+            "wwwroot/css/custom-datatables.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/account.min.js",
+        "inputFiles": [
+            "wwwroot/js/account.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/dashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/dashboard.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/update-field.min.js",
+        "inputFiles": [
+            "wwwroot/js/update-field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/add-field.min.js",
+        "inputFiles": [
+            "wwwroot/js/add-field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/nav-field.min.js",
+        "inputFiles": [
+            "wwwroot/js/nav-field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+
+    {
+        "outputFileName": "wwwroot/css/icon.min.css",
+        "inputFiles": [
+            "wwwroot/css/icon.css"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/lifecycle-field.min.js",
+        "inputFiles": [
+            "wwwroot/js/lifecycle-field.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/change-password.min.js",
+        "inputFiles": [
+            "wwwroot/js/change-password.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/my-approval.min.js",
+        "inputFiles": [
+            "wwwroot/js/my-approval.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/department.min.js",
+        "inputFiles": [
+            "wwwroot/js/department.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/update-department.min.js",
+        "inputFiles": [
+            "wwwroot/js/update-department.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/add-department.min.js",
+        "inputFiles": [
+            "wwwroot/js/add-department.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/my-request.min.js",
+        "inputFiles": [
+            "wwwroot/js/my-request.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/support.min.js",
+        "inputFiles": [
+            "wwwroot/js/support.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/login.min.js",
+        "inputFiles": [
+            "wwwroot/js/login.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/add-dataset.min.js",
+        "inputFiles": [
+            "wwwroot/js/add-dataset.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/lib/chart.js/dist/chartjs-plugin-datalabels.min.js",
+        "inputFiles": [
+            "wwwroot/lib/chart.js/dist/chartjs-plugin-datalabels.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/resource.min.js",
+        "inputFiles": [
+            "wwwroot/js/resource.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/issues.min.js",
+        "inputFiles": [
+            "wwwroot/js/issues.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    },
+    {
+        "outputFileName": "wwwroot/js/add-resource.min.js",
+        "inputFiles": [
+            "wwwroot/js/add-resource.js"
+        ],
+        // Optionally specify minification options
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        // Optinally generate .map file
+        "sourceMap": false
+    }
+]

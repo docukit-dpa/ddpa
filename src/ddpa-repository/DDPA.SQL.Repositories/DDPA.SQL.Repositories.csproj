@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Copyright>Corelan Technologies</Copyright>
+    <AssemblyTitle>DDPA Repositories</AssemblyTitle>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <AssemblyName>DDPA.SQL.Repositories</AssemblyName>
+    <PackageId>DDPA.SQL.Repositories</PackageId>
+    <RootNamespace>DDPA.SQL.Repositories</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RuntimeIdentifiers>win7-x64;win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../DDPA.SQL.Entities/DDPA.SQL.Entities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rc1-final" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc1-final" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+</Project>

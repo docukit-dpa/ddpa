@@ -1,0 +1,400 @@
+[
+  {
+    "name": "Dashboard",
+    "display": "Dashboard",
+    "description": "",
+    "isenabled": true,
+    "url": "/Dashboard/Index",
+    "order": 1,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "view": true,
+    "add": false,
+    "edit": false,
+    "delete": false
+  },
+  {
+    "name": "Dataset",
+    "display": "Data Sets",
+
+    "description": "",
+    "isenabled": true,
+    "url": "/Dataset/DataList",
+    "order": 2,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "submodule": [
+      {
+        "name": "DataList",
+        "display": "Data List",
+        "description": "",
+        "isenabled": true,
+        "url": "/Dataset/DataList",
+        "order": 1,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO"
+      },
+      {
+        "name": "Collection",
+        "display": "Collection",
+        "description": "",
+        "isenabled": true,
+        "url": "/Dataset/Data",
+        "order": 2,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldid": "3", //Collection Purpose
+            "order": 1
+          },
+          {
+            "fieldid": "4", //Data Owner
+            "order": 2
+          },
+          {
+            "fieldid": "5", //Collection Source
+            "order": 3
+          },
+          {
+            "fieldId": "6", //Collection Medium
+            "order": 4
+          },
+          {
+            "fieldId": "7", //How is consent obtained?
+            "order": 5
+          },
+          {
+            "fieldId": "8", //Comment
+            "order": 6
+          }
+        ]
+      },
+      {
+        "name": "Storage",
+        "display": "Storage",
+        "description": "",
+        "isenabled": true,
+        "url": "/DDPA/Storage",
+        "order": 3,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldId": "10", //Onsite/Offsite
+            "order": 2
+          },
+          {
+            "fieldId": "11", //External Party
+            "order": 3
+          },
+          {
+            "fieldId": "12", //Third party address
+            "order": 4
+          },
+          {
+            "fieldId": "13", //Storage
+            "order": 5
+          },
+          {
+            "fieldId": "14", //Define Storage
+            "order": 6
+          },
+          {
+            "fieldId": "15", //Obligation & Contract are obtained
+            "order": 7
+          },
+          {
+            "fieldId": "16", //Comment
+            "order": 8
+          }
+        ]
+      },
+      {
+        "name": "Usage",
+        "display": "Use",
+        "description": "",
+        "isenabled": true,
+        "url": "/DDPA/Usage",
+        "order": 4,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldId": "18", //Purpose of Use
+            "order": 1
+          },
+          {
+            "fieldId": "19", //User of Data
+            "order": 2
+          },
+          {
+            "fieldId": "20", //Access data by
+            "order": 3
+          },
+          {
+            "fieldId": "21", //Comment
+            "order": 4
+          }
+        ]
+      },
+      {
+        "name": "Transfer",
+        "display": "Disclosure",
+        "description": "",
+        "isenabled": true,
+        "url": "/DDPA/Transfer",
+        "order": 5,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldId": "22", //Outside Singapore?
+            "order": 1
+          },
+          {
+            "fieldId": "23", //Transferred To
+            "order": 2
+          },
+          {
+            "fieldId": "24", //External Party
+            "order": 3
+          },
+          {
+            "fieldId": "25", //Purpose of Transfer
+            "order": 4
+          },
+          {
+            "fieldId": "26", //Mode of Transfer
+            "order": 5
+          },
+          {
+            "fieldId": "27", //Comment
+            "order": 6
+          }
+        ]
+      },
+      {
+        "name": "Archival",
+        "display": "Archival",
+        "description": "",
+        "isenabled": true,
+        "url": "/DDPA/Archival",
+        "order": 6,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldId": "28", //Retained in
+            "order": 1
+          },
+          {
+            "fieldId": "29", //Storage
+            "order": 2
+          },
+          {
+            "fieldId": "30", //Retention Period in Months
+            "order": 3
+          },
+          {
+            "fieldId": "31", //Define retention period
+            "order": 4
+          },
+          {
+            "fieldId": "48", //Storage Medium
+            "order": 5
+          },
+          {
+            "fieldId": "49", //Storage Location
+            "order": 6
+          },
+          {
+            "fieldId": "50", //Obligation & Contract are Obtained
+            "order": 7
+          },
+          {
+            "fieldId": "32", //Comment
+            "order": 8
+          }
+        ]
+      },
+      {
+        "name": "Disposal",
+        "display": "Disposal",
+        "description": "",
+        "isenabled": true,
+        "url": "/DDPA/Disposal",
+        "order": 7,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+        "submodulefield": [
+          {
+            "fieldId": "33", //Disposal Method
+            "order": 1
+          },
+          {
+            "fieldId": "34", //Reason for Disposal
+            "order": 2
+          },
+          {
+            "fieldId": "51", //Obligation & Contract are Obtained
+            "order": 3
+          },
+          {
+            "fieldId": "35", //Comment
+            "order": 4
+          }
+        ]
+      },
+      {
+        "name": "Issues",
+        "display": "Notes",
+        "description": "",
+        "isenabled": true,
+        "url": "/Dataset/Issues",
+        "order": 8,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO"
+      }
+    ],
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  },
+  {
+    "name": "DDPA",
+    "display": "DDPA",
+    "description": "DDPA",
+    "isenabled": false,
+    "url": "/DDPA/Index",
+    "order": 3,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  },
+  {
+    "name": "Approval",
+    "display": "Approval",
+    "description": "",
+    "isenabled": true,
+    "url": "/Approval/Index",
+    "order": 3,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "submodule": [
+      {
+        "name": "MyRequest",
+        "display": "My Requests",
+        "description": "",
+        "isenabled": true,
+        "url": "/Approval/MyRequest",
+        "order": 1,
+        "roles": "USER,DEPTHEAD/DPO"
+      },
+      {
+        "name": "MyApproval",
+        "display": "Approval",
+        "description": "",
+        "isenabled": true,
+        "url": "/Approval/MyApproval",
+        "order": 2,
+        "roles": "ADMINISTRATOR,DEPTHEAD,DPO"
+      }
+    ],
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  },
+  {
+    "name": "Maintenance",
+    "display": "Administration",
+    "description": "",
+    "isenabled": true,
+    "url": "/Maintenance/User",
+    "order": 4,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "submodule": [
+      {
+        "name": "User",
+        "display": "User Management",
+        "description": "",
+        "isenabled": true,
+        "url": "/Maintenance/User",
+        "order": 1,
+        "roles": "ADMINISTRATOR,DPO"
+      },
+      {
+        "name": "Department",
+        "display": "Department",
+        "description": "",
+        "isenabled": true,
+        "url": "/Maintenance/Department",
+        "order": 2,
+        "roles": "ADMINISTRATOR,DPO"
+      },
+      {
+        "name": "Field",
+        "display": "Data Types",
+        "description": "",
+        "isenabled": true,
+        "url": "/Maintenance/Field",
+        "order": 3,
+        "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO"
+      },
+      {
+        "name": "LifeCycleField",
+        "display": "Fields",
+        "description": "",
+        "isenabled": true,
+        "url": "/Maintenance/LifeCycleField",
+        "order": 4,
+        "roles": "ADMINISTRATOR,DPO"
+      },
+      {
+        "name": "Dataset",
+        "display": "Data Sets",
+        "description": "",
+        "isenabled": true,
+        "url": "/Maintenance/Dataset",
+        "order": 5,
+        "roles": "ADMINISTRATOR,DPO"
+      }
+    ],
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  },
+  {
+    "name": "Report",
+    "display": "Report",
+    "description": "",
+    "isenabled": false,
+    "url": "/Report/Index",
+    "order": 5,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "view": true,
+    "add": false,
+    "edit": false,
+    "delete": false
+  },
+  {
+    "name": "Resource",
+    "display": "Resource",
+    "description": "",
+    "isenabled": true,
+    "url": "/Resource/Index",
+    "order": 6,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  },
+  {
+    "name": "Support",
+    "display": "Support",
+    "description": "",
+    "isenabled": true,
+    "url": "/Support/Index",
+    "order": 7,
+    "roles": "ADMINISTRATOR,USER,DEPTHEAD,DPO",
+    "view": true,
+    "add": true,
+    "edit": true,
+    "delete": false
+  }
+]

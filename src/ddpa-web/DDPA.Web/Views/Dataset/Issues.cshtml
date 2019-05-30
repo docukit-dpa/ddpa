@@ -1,0 +1,130 @@
+﻿@section scripts{
+    <environment names="Development">
+        <script src="~/js/issues.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/issues.min.js"></script>
+    </environment>
+}
+<div class="ui one column grid">
+    <div class="row">
+        <div class="column">
+            <h4 class="ui top attached inverted header">
+                Data Notes
+                <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_dataSet_notes"]" data-position="top left">
+                    <i class="question icon" style="margin-right:0px;"></i>
+                </div>
+            </h4>
+            @*<div id="userView" value="@urEdit" hidden></div>*@
+            <div class="ui attached segment">
+                <table id="tbl_issueTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetIssues", "Dataset", new {id="0" })">
+                    <thead>
+                        <tr class="center">
+                            <th>Data Set Name</th>
+                            <th>Department</th>
+                            @*<th class="three wide">Issue</th>
+                            <th>Severity Level</th>*@
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Assigned To</th>
+                            <th>Action Taken</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="userRole" name="userRole" value="@ViewBag.userRole" />
+
+@*Edit Issues modal*@
+<div class="ui tiny modal" id="editIssue">
+    <div class="header">
+        <h4 class="modalheader">Edit Note</h4>
+    </div>
+    <div class="content">
+        <form id="f_editIssue" novalidate="novalidate" class="ui form" asp-controller="Dataset" asp-action="EditIssue" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" role="form" autocomplete="off">
+            @*<form id="f_editIssue" novalidate="novalidate" class="ui form" asp-controller="Dataset" asp-action="EditIssue" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" role="form" autocomplete="off">
+                *@
+                <input id="eid" name="id" type="hidden" />
+                <input id="eDocId" name="DocId" type="hidden" />
+                @*<div class="sixteen wide field">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            <label for="Issue">Issue <span style="color:white"> *</span></label>
+                        </div>
+                        <input type="text" id="eIssue" name="Issue" class="validate required field" />
+                    </div>
+                </div>
+                <div class="sixteen wide field">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            <label for="SeverityLevel">Severity Level<span style="color:white"> *</span></label>
+                        </div>
+                        <select class="ui validate required field" type="text" id="eSeverityLevel" name="SeverityLevel">
+                            <option value="High">High</option>
+                            <option value="Med">Med</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </div>*@
+                <div class="sixteen wide field" id="eDescField">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            Description  *
+                        </div>
+                        <input type="text" id="eDescription" name="Description" class="validate" />
+                    </div>
+                </div>
+                <div class="sixteen wide field">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            Date  *
+                        </div>
+                        <input type="date" id="eDate" name="Date" class="validate required field" />
+                    </div>
+                </div>
+                <div class="sixteen wide field" id="eAssignedToField">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            <label for="AssignedTo">Assigned To<span style="color:white"> *</span></label>
+                        </div>
+                        <input type="text" id="eAssignedTo" name="AssignedTo" class="validate required field" />
+                    </div>
+                </div>
+                <div class="sixteen wide field" id="eActionField">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            <label for="Action">Action<span style="color:white"> *</span></label>
+                        </div>
+                        <input type="text" id="eAction" name="Action" class="validate required field" />
+                    </div>
+                </div>
+                <div class="sixteen wide field">
+                    <div class="ui labeled input">
+                        <div class="ui inverted grey label">
+                            <label for="Status">Status<span style="color:white"> *</span></label>
+                        </div>
+                        <select class="validate required field" id="eStatus" name="Status">
+                            <option value="Open">Open</option>
+                            <option value="InProgress">In Progress</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="editIssueModalMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </form>
+    </div>
+    <div class="actions">
+        <button class="ui negative button right">Cancel</button>
+        <button id="editIssueButton" type="submit" form="f_editIssue" class="ui blue left button">Save</button>
+    </div>
+</div>
+
+

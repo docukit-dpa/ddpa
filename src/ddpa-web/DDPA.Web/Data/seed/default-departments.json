@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Production",
+        "description": "Production Department"
+    },
+    {
+        "name": "Purchasing",
+        "description": "Purchasing Department"
+    },
+    {
+        "name": "Marketing",
+        "description": "Marketing Department"
+    },
+    {
+        "name": "Sales",
+        "description": "Sales Department"
+    },
+    {
+        "name": "Human Resource Management",
+        "description": "Human Resource Management Department"
+    },
+    {
+        "name": "Accounting and Finance",
+        "description": "Accounting and Finance Department"
+    }
+]

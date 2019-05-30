@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Support";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/support.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/support.min.js"></script>
+    </environment>
+}
+ 
+@model SendMailViewModel
+
+<main>
+    <div class="column">
+        <div class="sixteen wide tablet eight wide computer column">
+            <div class="ui attached info large message">
+                <div class="header">
+                    We'd love to hear from you
+                </div>
+                <p>Reach us using the links below or Fill out the form to send us a message.</p>
+            </div>
+            <div class="ui form attached fluid segment">
+                <div class="ui big list">
+                    <div class="item">
+                        <i class="mail icon"></i>
+                        <div class="content">
+                            <a href="mailto:support@docukit.com">support@docukit.com</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="skype icon"></i>
+                        <div class="content">
+                            docukit.helpdesk
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="globe icon"></i>
+                        <div class="content">
+                            <a href="http://www.docukit.com">www.docukit.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

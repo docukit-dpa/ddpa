@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="~/favicon-ddpa.ico" />
+
+    <environment include="Development">
+
+        <link rel="stylesheet" type="text/css" href="~/framework/semantic.css">
+        <link rel="stylesheet" type="text/css" href="~/components/css/style.css">
+        <link rel="stylesheet" type="text/css" href="~/components/datatable/datatables.css" />
+
+
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" type="text/css" href="~/framework/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="~/components/css/style.min.css">
+        <link rel="stylesheet" type="text/css" href="~/components/datatable/datatables.min.css" />
+    </environment>
+</head>
+<body class="flex">
+    @await Html.PartialAsync("_NavHeader")
+
+    <div class="ui container fluid flex-content main fullwidth">
+        @await Html.PartialAsync("_SubModule")
+        @RenderBody()
+    </div>
+
+    <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+                <div class="three wide middle aligned column">
+                    <img class="ui centered rounded small image" src="~/images/docukitlogo.jpg">
+                </div>
+                <div class="ten wide column">
+                    <h5 class="ui inverted header violet">Developed by Docukit</h5>
+                    <p>in cooperation with ICONZ-Webvision</p>
+                </div>
+                <div class="three wide middle aligned column">
+                    <a href="https://www.docukit.com/dataprotection/" target="_blank" class="ui basic fluid large teal button">
+                        <i class="life ring icon"></i>Need Support?
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <environment include="Development">
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery-wait.js"></script>
+
+        <script src="~/js/ajax-form.js" asp-append-version="true"></script>
+        <script src="~/framework/semantic.js" asp-append-version="true"></script>
+        <script src="~/js/init.js" asp-append-version="true"></script>
+        <script src="~/lib/pace/pace.js"></script>
+        <script src="~/components/datatable/datatables.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/chart.js/dist/Chart.js"></script>
+        <script src="~/lib/devbridge-autocomplete/dist/jquery.autocomplete.js"></script>
+        <script src="~/lib/jquery-easyPaginate/jquery.easyPaginate.js"></script>
+        <script src="~/js/nav-field.js" asp-append-version="true"></script>
+
+
+
+
+    </environment>
+    <environment names="Staging,Production">
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery-wait.min.js"></script>
+        <script src="~/js/ajax-form.min.js" asp-append-version="true"></script>
+        <script src="~/framework/semantic.min.js" asp-append-version="true"></script>
+        <script src="~/js/init.min.js" asp-append-version="true"></script>
+        <script src="~/lib/pace/pace.js"></script>
+        <script src="~/components/datatable/datatables.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/chart.js/dist/Chart.min.js"></script>
+        <script src="~/lib/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+        <script src="~/lib/jquery-easyPaginate/jquery.easyPaginate.js"></script>
+        <script src="~/js/nav-field.min.js" asp-append-version="true"></script>
+
+    </environment>
+    <script>
+        var globalAddCollectionUrl = "@Url.Action("AddCollection", "Dataset")";
+        var globalGetFieldUrl = "@Url.Action("GetField", "Dataset")";
+        var globalPageSize20 = 20;
+        var resultMsg = "";
+        var defaultStatus = "Collection";
+        var globalGetDocuments = "@Url.Action("GetDocuments", "Dataset")";
+        var globalUpdateDocument = "@Url.Action("Collection", "Dataset")";
+        var globalDownloadAttachment = "@Url.Action("DownloadAttachment", "Dataset")";
+        var globalAutoComplete = "@Url.Action("GetFieldById", "Dataset")";
+        var globalGetIssues = "@Url.Action("GetIssues", "Dataset")";
+        var globalGetIssuesUrl = "@Url.Action("GetIssues", "Dataset")";
+        var globalGetFieldItemsUrl = "@Url.Action("GetFieldItems", "Dataset")";
+
+
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

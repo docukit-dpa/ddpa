@@ -1,0 +1,46 @@
+﻿@{var setupValue = "";}
+@if (ViewBag.LoginState == "userSetup")
+{
+    <!--UsER Setup Buttons-->
+    <div class="ui divider"></div>
+    <div class="actions">
+        <a class="ui right floated large blue button" asp-controller="Maintenance" asp-action="DoneSetup">
+            Done
+        </a>
+        <a class="ui floated large red button active" asp-controller="Maintenance" asp-action="SkipSetup">
+            <i class="ban icon"></i>
+            Cancel
+        </a>
+    </div>
+    setupValue = ViewBag.showModal;
+}
+<div id="LoginState" value="@setupValue" hidden></div>
+
+<div id="setupModal" class="ui large modal">
+    <div class="header">
+        Welcome to Docukit Data Protection Application!
+    </div>
+    <div class="scrolling content">
+        <div class="description">
+            <div class="ui segment">
+                <h4 class="ui header">Hi Data Protection Officer,</h4>
+                <p>To ensure the quality user experience, we recommend to setup the <b>“Administration”</b> before using the Docukit DP App.</p>
+                <h4>List of prerequisites are as follows:</h4>
+                <ul><li><b>User Management –</b> User roles available are Department Head and Regular Users. For multiple departments, it is a must to add new users and assigned them to certain role and department.</li>
+                    <li><b>Data Type –</b> Predefined data types are also available, but sensitivity levels are not determined.</li>
+                    <li><b>Fields –</b> Defined fields every data life cycle. User may add new fields each life cycle to meet data policy requirements.</li>
+                    <li><b>Data Sets –</b> Data Set templates to be used for multiple data occurrences. Each data set template consists of data types collected.</li>
+                    <li><b>Department –</b> Upon installation, Docukit DP App have predefined values in department section. User can check it and add new departments.</li></ul>
+                Click the button <b>“Proceed to Setup”</b> to configure the <b>“Administration”</b>. Click <b>“Skip”</b> button to skip the setup, and use the predefined values provided by the tool.
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <a asp-controller="Maintenance" asp-action="SkipSetup" class="ui basic deny gray tiny button">
+            Skip
+        </a>
+        <div onclick=" $('#setupModal').modal('hide');" class="ui green deny tiny button">
+            Proceed to Setup
+        </div>
+    </div>
+</div>

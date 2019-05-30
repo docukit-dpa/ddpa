@@ -1,0 +1,289 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DDPA.SQL.Entities;
+@inject SignInManager<ExtendedIdentityUser> SignInManager
+<!-- DDPA UI v2 -->
+@if (SignInManager.IsSignedIn(User) && ViewBag.Title != "Login")
+{
+    var submodule = new List<SubModuleViewModel>();
+    string currentModuleName = "";
+    var url = "";
+
+    @if (ViewBag.Modules != null)
+    {
+        @foreach (var module in ViewBag.Modules)
+        {
+
+            if ((@ViewBag.userRole == "ADMINISTRATOR") || (@ViewBag.userRole == "DPO"))
+            {
+                if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == @module.Name.ToUpper())
+                {
+                    var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                    currentModuleName = moduleName;
+
+                    submodule = module.SubModule;
+
+                }
+
+                else
+                {
+                    var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                }
+            }
+            else
+            {
+                @foreach (var uRights in ViewBag.UserRights)
+                {
+                    if ((uRights.ModuleName.ToUpper() == @module.Name.ToUpper() && @uRights.View == 1))
+                    {
+                        url = @module.Url;
+                        //change maintenance url if role is user or dept head
+                        if ((@ViewBag.userRole == "USER" || @ViewBag.userRole == "DEPTHEAD") && @module.Name.ToUpper() == "MAINTENANCE")
+                        {
+                            url = "/Maintenance/Field";
+
+                        }
+
+                        if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == @module.Name.ToUpper())
+                        {
+                            var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                            currentModuleName = moduleName;
+
+                            submodule = module.SubModule;
+                        }
+                        else
+                        {
+                            var moduleName = (module.Name == "Dataset") ? "Data Sets" : module.Name;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    <!--module body-->
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui header">
+                    @ViewBag.companyName
+                </h4>
+                <div class="ui horizontal divider">
+                    <h3 class="ui violet header">
+                        @{
+                            var tempModuleName = "";
+                            var tempModuleIcon = "";
+                        }
+                        @if (currentModuleName == "Maintenance")
+                        {
+                            tempModuleName = "ADMINISTRATION";
+                            tempModuleIcon = "wrench";
+                        }
+                        else if (currentModuleName == "Dashboard")
+                        {
+                            tempModuleName = "DASHBOARD";
+                            tempModuleIcon = "tachometer alternate";
+                        }
+                        else if (currentModuleName == "Data Sets")
+                        {
+                            tempModuleName = "DATA LIFE CYCLE";
+                            tempModuleIcon = "random icon";
+                        }
+                        else if (currentModuleName == "Approval")
+                        {
+                            tempModuleName = "APPROVAL";
+                            tempModuleIcon = "check";
+                        }
+                        else if (currentModuleName == "Resource")
+                        {
+                            tempModuleName = "RESOURCE";
+                            tempModuleIcon = "info";
+                        }
+                        else if (currentModuleName == "Support")
+                        {
+                            tempModuleName = "CONTACT US";
+                            tempModuleIcon = "mail";
+                        }
+                        <i class="@tempModuleIcon icon"></i>
+                        <div class="content">
+                            @tempModuleName
+                        </div>
+                    </h3>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui fluid steps" id="subModuleDivider" style="display: none;">
+                    <input type="hidden" value="@submodule.Count()" id="subModuleCount" />
+                    <input type="hidden" value="@ViewContext.RouteData.Values["action"].ToString().ToUpper()" id="currentAction" />
+                    @if (ViewContext.RouteData.Values["action"].ToString().ToUpper() != "CHANGEPASSWORDUSER" && ViewContext.RouteData.Values["action"].ToString().ToUpper() != "CHANGECOMPANYNAME" && submodule.Count() > 0)
+                    {
+                        foreach (var sub in submodule)
+                        {
+
+                            string display = "";
+                            //if disabled: just remove display css
+                            //hide: if the submodule's ROLES not contains the current user's ROLE
+                            if (!sub.Roles.Contains(ViewBag.userRole))
+                            {
+                                display = "none;";
+                            }
+                            //if user is DPO change MyRequest To Drafts
+                            if (@ViewBag.userRole == "DPO" && @sub.Name=="MyRequest")
+                            { sub.Display = "My Drafts"; }
+
+                            if (ViewContext.RouteData.Values["action"].ToString().ToUpper().Contains(@sub.Name.ToUpper()))
+                            {
+                                //todo: remove submodule if logged user is DPO
+                                if (@ViewBag.userRole == "DPO")
+                                {
+                                    if (currentModuleName == "MyAproval")
+                                    {
+                                        <a href="@sub.Url" class="step">
+                                            <div class="content">
+                                                <div class="title">
+                                                    @sub.Display
+                                                    @if (sub.Name == "MyRequest")
+                                                    {
+                                                        <div class=" ui red horizontal label requestCount hidden"></div>
+                                                    }
+                                                    else if (sub.Name == "MyApproval")
+                                                    {
+                                                        <div class=" ui red horizontal label approvalCount hidden"></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                    else if (currentModuleName == "Data Sets")
+                                    {
+                                        <a href="@sub.Url" class="step">
+                                            <div class="content">
+                                                <div class="title">
+                                                    @sub.Display
+                                                    <div class=" ui red horizontal label hidden"></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@sub.Url" class="step">
+                                            <div class="content">
+                                                <div class="title">
+                                                    @sub.Display
+                                                    @if (sub.Name == "MyRequest")
+                                                    {
+                                                        <div class=" ui red horizontal label requestCount hidden"></div>
+                                                    }
+                                                    else if (sub.Name == "MyApproval")
+                                                    {
+                                                        <div class=" ui red horizontal label approvalCount hidden"></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@sub.Url" class="step">
+                                        <div class="content">
+                                            <div class="title">
+                                                @sub.Display
+                                                @if (sub.Name == "MyRequest")
+                                                {
+                                                    <div class=" ui red horizontal label requestCount hidden"></div>
+                                                }
+                                                else if (sub.Name == "MyApproval")
+                                                {
+                                                    <div class=" ui red horizontal label approvalCount hidden"></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                }
+                            }
+
+                            else
+                            {
+                                if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == "DATASET")
+                                {
+                                    if (ViewContext.RouteData.Values["action"].ToString().ToUpper() == "DATA")
+                                    {
+                                        if ((@sub.Display != "Data List"))
+                                        {
+                                            var btnVal = "btn" + @sub.Name;
+                                            <a onclick="openSubModule(event, @btnVal)" id="@btnVal" class="tablinks step" title="@sub.Name">
+                                                <div class="content">
+                                                    <div class="title">@sub.Display</div>
+                                                </div>
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (@sub.Display == "Data List")
+                                        {
+                                            <a href="@sub.Url" class="step">
+                                                <div class="content">
+                                                    <div class="title">@sub.Display</div>
+                                                </div>
+                                            </a>
+
+                                        }
+                                        if (@ViewBag.userRole == "DPO")
+                                        {
+                                            if (@sub.Name == "Issues")
+                                            {
+                                                <a href="@sub.Url" class="step">
+                                                    <div class="content">
+                                                        <div class="title">@sub.Display</div>
+                                                    </div>
+                                                </a>
+
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == "MAINTENANCE" && ViewBag.userRole == "USER" && @sub.Display != "Field")
+                                {
+                                    <a href="@sub.Url" class="step" style="display: @display">
+                                        <div class="content">
+                                            <div class="title">@sub.Display</div>
+                                        </div>
+                                    </a>
+                                }
+                                else if (ViewContext.RouteData.Values["controller"].ToString().ToUpper() == "MAINTENANCE" && ViewBag.userRole == "DEPTHEAD" && @sub.Display == "Life Cycle")
+                                {
+                                    <a href="@sub.Url" class="step" style="display: @display">
+                                        <div class="content">
+                                            <div class="title">@sub.Display</div>
+                                        </div>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@sub.Url" class="step" style="display: @display">
+                                        <div class="content">
+                                            <div class="title">
+                                                @sub.Display
+                                                @if (sub.Name == "MyRequest")
+                                                {
+                                                    <div class=" ui red horizontal label requestCount hidden"></div>
+                                                }
+                                                else if (sub.Name == "MyApproval")
+                                                {
+                                                    <div class=" ui red horizontal label approvalCount hidden"></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

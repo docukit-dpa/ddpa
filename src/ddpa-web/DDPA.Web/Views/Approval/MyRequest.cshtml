@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using DDPA.Commons.Helper;
+
+
+@{
+    ViewData["Title"] = "My Requests";
+
+}
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/my-request.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/my-request.min.js"></script>
+    </environment>
+}
+
+@*new logs modal*@
+<div class="ui longer modal" id="logs_modal">
+    <div class="header">
+        Data Set Logs
+    </div>
+    <div class="scrolling content">
+        <table id="logsTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetLogs", "Approval")">
+            <thead>
+                <tr>
+                    <th class="desktop">Data Set Name</th>
+                    <th class="desktop">Action</th>
+                    <th class="desktop">Description</th>
+                    <th class="desktop">Comments</th>
+                    <th class="all">Date</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui red floated right deny button">
+            Close
+        </div>
+    </div>
+</div>
+@*new logs modal*@
+
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <div id="bulkDelete_btn" class="ui small right floated compact labeled icon red button" data-content="Delete Selected Users" data-position="left center" data-variation="small" onclick="$('#bulkDeleteModal').modal('show');">
+                    <i class="trash icon"></i>
+                    Delete
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Data List
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_approval_myRequest"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <table id="approvalTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetRequestDocuments", "Approval")">
+                        <thead>
+                            <tr>
+                                <th class="one wide">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" tabindex="0" id="checkAll">
+                                        <label></label>
+                                    </div>
+                                </th>
+                                <th class="three wide">Department</th>
+                                <th class="three wide">Data Set Name</th>
+                                @*<th class="three wide">Data Set</th>*@
+                                <th class="two wide">Details</th>
+                                <th class="two wide">Logs</th>
+                                <th class="two wide">Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--MODALS-->
+<!--DELETE MODAL-->
+<div class="ui tiny modal" id="bulkDeleteModal">
+    <div class="header">
+        Delete Users
+    </div>
+    <div class="content">
+        <p>Are you sure you want to delete these data set drafts?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="bulkDelete();">
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+<!--DELETE MODAL-->
+<!--MODALS-->

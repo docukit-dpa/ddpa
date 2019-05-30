@@ -1,0 +1,91 @@
+﻿@using DDPA.Commons.Results;
+@using DDPA.DTO;
+@{
+    ViewData["Title"] = "Register";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/account.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/account.min.js"></script>
+    </environment>
+}
+
+
+@model AddUserViewModel
+<main>
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-image card-noimg">
+                            <img src="~/images/title-bg.png">
+                            <span class="card-title">@ViewBag.Title</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="row">
+                                <form id="f_register" class="col s12" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <input asp-for="FirstName" type="text" class="validate" required />
+                                            <label for="FirstName">First Name <span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <input asp-for="LastName" type="text" class="validate" required />
+                                            <label for="LastName">Last Name <span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <input asp-for="Email" type="email" class="validate" required />
+                                            <label for="Email">Email <span style="color:red">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <input asp-for="UserName" type="text" class="validate" required />
+                                            <label for="UserName">User Name <span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <input asp-for="Password" type="password" class="validate" required/>
+                                            <label for="Password">Password <span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <input asp-for="ConfirmPassword" type="password" class="validate" required/>
+                                            <label for="ConfirmPassword">Confirm Password <span style="color:red">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s4">
+                                            <select asp-for="DepartmentId" class="validate" required>
+                                                <option disabled selected class="validate" required>Choose your option</option>
+                                                @foreach (DepartmentDTO department in (List<DepartmentDTO>)ViewData["departmentList"])
+                                                {
+                                                    <option class="validate" value="@department.Id" required>@department.Name</option>
+                                                }
+                                            </select>
+                                            <label for="DepartmentId">Department <span style="color:red">*</span></label>
+                                        </div>
+                                        <div class="input-field col s4">
+                                            <select asp-for="TypeOfNotification" class="validate" required>
+                                                <option disabled selected class="validate" required>Choose your option</option>
+                                                <option class="validate" required>Email</option>
+                                                <option class="validate" required>Manual</option>
+                                            </select>
+                                            <label for="TypeOfNotification">Type of Notification <span style="color:red">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="card-action right-align">
+                                        <a asp-controller="Account" asp-action="Login" class="waves-effect waves-light btn red lighten-1">Cancel</a>
+                                        <button type="submit" form="f_register" class="waves-effect waves-light btn blue">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using DDPA.Commons.Helper;
+
+
+@{
+    ViewData["Title"] = "Approval";
+
+}
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/my-approval.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/my-approval.min.js"></script>
+    </environment>
+}
+
+@*approve modal*@
+<div class="ui mini modal" id="approveModal">
+    <div class="header">
+        Approve Data Sets
+    </div>
+    <div class="content">
+        <p>Are you sure you want to approve these data sets?</p>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">
+            No
+        </div>
+        <div class="ui positive left labeled icon button" onclick="approve();">
+            <form id="deleteField_form" class="col s12" asp-controller="Maintenance" asp-action="DeleteField" method="post" role="form" autocomplete="off">
+                <input type="hidden" id="id" name="id" value="0" />
+            </form>
+            Yes
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+@*approve modal*@
+
+@*new logs modal*@
+<div class="ui longer modal" id="logs_modal">
+    <div class="header">
+        Data Set Logs
+    </div>
+    <div class="scrolling content">
+        <table id="logsTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetLogs", "Approval")">
+            <thead>
+                <tr>
+                    <th class="desktop">Data Set Name</th>
+                    <th class="desktop">Action</th>
+                    <th class="desktop">Description</th>
+                    <th class="desktop">Comments</th>
+                    <th class="all">Date</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui red floated right deny button">
+            Close
+        </div>
+    </div>
+</div>
+@*new logs modal*@
+
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <a>
+                    <div id="approveButton" class="ui small compact labeled icon blue button" data-content="Approve Selected" data-position="right center" data-variation="small" onclick="$('#approveModal').modal('show');">
+                        <i class="check icon"></i>
+                        Approve
+                    </div>
+                </a>
+                <h4 class="ui top attached inverted header">
+                    Data List
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_approval_myApproval"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <table id="approvalTable" class="ui small compact celled table" style="width:100%" data-table-url="@Url.Action("GetApprovalDocuments", "Approval")" data-table-url-edit="@Url.Action("UpdateField", "Maintenance")" data-table-url-items="@Url.Action("AddFieldItem", "Maintenance")" data-table-url-delete="@Url.Action("DeleteField", "Maintenance")">
+                        <thead>
+                            <tr>
+                                <th class="one wide">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" tabindex="0" id="checkAll">
+                                        <label></label>
+                                    </div>
+                                </th>
+                                <th class="three wide">Department</th>
+                                @*<th class="three wide">Data Number</th>*@
+                                <th class="three wide">Data Set Name</th>
+                                <th class="two wide">Details</th>
+                                <th class="two wide">Logs</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

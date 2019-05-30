@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="table_tp_administration_dataSetList" xml:space="preserve">
+    <value>Set up the data set templates.</value>
+  </data>
+  <data name="table_tp_administration_dataTypesList" xml:space="preserve">
+    <value>Define all types of personal data in your organisation’s possession.</value>
+  </data>
+  <data name="table_tp_administration_deptList" xml:space="preserve">
+    <value>Define the list of departments in your organisation.</value>
+  </data>
+  <data name="table_tp_administration_fieldList" xml:space="preserve">
+    <value>Set up the personal data asset inventory template to include additional fields (if any).</value>
+  </data>
+  <data name="table_tp_administration_userList" xml:space="preserve">
+    <value>Create new user and manage their access rights.</value>
+  </data>
+  <data name="table_tp_approval_myApproval" xml:space="preserve">
+    <value>List of for data sets pending approval.</value>
+  </data>
+  <data name="table_tp_approval_myRequest" xml:space="preserve">
+    <value>List of tasks assigned to other users. Please note that this feature is only applicable for the multi-user configuration/set-up.</value>
+  </data>
+  <data name="table_tp_approval_notification" xml:space="preserve">
+    <value>List of notifications.</value>
+  </data>
+  <data name="table_tp_dashboard_dataSetOwners" xml:space="preserve">
+    <value>This graph shows the number of data sets owned by each department.</value>
+  </data>
+  <data name="table_tp_dashboard_externalParties" xml:space="preserve">
+    <value>This graph shows the number of data sets that external parties have access to.</value>
+  </data>
+  <data name="table_tp_dashboard_issueRiskLevel" xml:space="preserve">
+    <value>This graph shows the summary of gaps/issues for each department’s submission that are segregated by risk level.</value>
+  </data>
+  <data name="table_tp_dashboard_storage" xml:space="preserve">
+    <value>This graph shows the number of data sets in each storage medium.</value>
+  </data>
+  <data name="table_tp_dataSet_archival" xml:space="preserve">
+    <value>Retention information of data set. The retention period, where the data is retained, storage medium, etc. are stated here.</value>
+  </data>
+  <data name="table_tp_dataSet_collection" xml:space="preserve">
+    <value>Collection information of data set. Contains the data owner, collection purpose, collection purpose, etc. Click on each stage and fill up the fields to document the lifecycle of personal data in your organization.</value>
+  </data>
+  <data name="table_tp_dataSet_dataList" xml:space="preserve">
+    <value>List of approved data sets.</value>
+  </data>
+  <data name="table_tp_dataSet_disposal" xml:space="preserve">
+    <value>Disposal information of data set including the disposal method, reason of disposal, etc.</value>
+  </data>
+  <data name="table_tp_dataSet_notes" xml:space="preserve">
+    <value>List of data sets with gaps/issues.</value>
+  </data>
+  <data name="table_tp_dataSet_notesPerDoc" xml:space="preserve">
+    <value>List down the gaps/issues identified for each data set and track the remediation progress here.</value>
+  </data>
+  <data name="table_tp_dataSet_storage" xml:space="preserve">
+    <value>Storage information of data set. Consists of storage be it Onsite or offsite, and external parties.</value>
+  </data>
+  <data name="table_tp_dataSet_transfer" xml:space="preserve">
+    <value>Disclosure information of data set. Details indicated here are, the purpose of transfer, where it was transferred, transferred outside/inside Singapore, mode of transfer and the external party.</value>
+  </data>
+  <data name="table_tp_dataSet_usage" xml:space="preserve">
+    <value>Usage information of data set including the users of data, who can access the data and the purpose of collected data.</value>
+  </data>
+  <data name="table_tp_resource_resourceList" xml:space="preserve">
+    <value>List of resources for reference.</value>
+  </data>
+  <data name="title_archival" xml:space="preserve">
+    <value>Retention</value>
+    <comment>Archival changed to Retention</comment>
+  </data>
+  <data name="title_transfer" xml:space="preserve">
+    <value>Disclosure</value>
+    <comment>Transfer changed to Disclosure</comment>
+  </data>
+  <data name="title_usage" xml:space="preserve">
+    <value>Use</value>
+    <comment>Usage changed to Use</comment>
+  </data>
+  <data name="tooltip_dashboardd" xml:space="preserve">
+    <value />
+  </data>
+</root>

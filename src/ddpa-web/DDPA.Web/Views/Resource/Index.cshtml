@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Resource";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/resource.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/resource.min.js"></script>
+    </environment>
+}
+
+<main>
+    @if (@ViewBag.userRole == "ADMINISTRATOR" || @ViewBag.userRole == "DPO")
+    {
+        <div class="ui one column grid">
+            <div class="row">
+                <div class="column">
+                    <a asp-controller="Resource" asp-action="AddResource">
+                        <div class="ui small compact labeled icon blue button" data-content="Add a New Resource" data-position="right center" data-variation="small">
+                            <i class="plus icon"></i>
+                            Add Resource
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Data List
+                    <div class="ui grey mini label" data-tooltip="@SharedLocalizer["table_tp_resource_resourceList"]" data-position="top left">
+                        <i class="question icon" style="margin-right:0px;"></i>
+                    </div>
+                </h4>
+                <div class="ui attached segment">
+                    <table width="100%" id="resource_table" class="ui small compact celled table" data-table-url="@Url.Action("GetResources", "Resource")" data-table-url-edit="@Url.Action("UpdateField", "Maintenance")" data-table-url-items="@Url.Action("AddFieldItem", "Maintenance")" data-table-url-delete="@Url.Action("DeleteField", "Maintenance")">
+                        <thead>
+                            <tr>
+                                <th class="seven wide">Name of Document</th>
+                                <th class="seven wide">Type of Document</th>
+                                <th class="one wide">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+

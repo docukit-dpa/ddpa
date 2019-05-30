@@ -1,0 +1,94 @@
+body {
+}
+/*==============================================================================
+//	Custom Styles : Main App Body
+//==============================================================================
+*/
+.main.container {
+  margin-top: 6em;
+  margin-bottom: 2em;
+  }
+
+.username{
+  margin-left: 5px;
+}
+
+.container.fluid.fullwidth{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+      .container.fluid.fullwidth{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+/*==============================================================================
+//	Custom Styles : Login Page
+//==============================================================================
+*/
+.ui.header.loginheader{
+  margin-bottom:1em;
+}
+
+.ui.grid.loginsegment{
+  margin-top:1em;
+}
+
+.ui.grid.midimage{
+  margin-top:2.5em;
+}
+/*==============================================================================
+//	Custom Styles : Contact Page
+//==============================================================================
+*/
+.ui.segment.segpadding{
+  margin-top:2em !important;
+}
+/*==============================================================================
+//	Custom Styles : Change Pass
+//==============================================================================
+*/
+.ui.grid.changepasssegment{
+  margin-top:3em;
+}
+/*==============================================================================
+//	Custom Styles : Footer
+//==============================================================================
+*/
+
+.footer.segment {
+      padding: 2em 0em;
+}
+
+.flex {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.ui.container.flex-content {
+  flex: 1;
+}
+/*==============================================================================
+//	Custom Styles : Steps
+//==============================================================================
+*/
+.ui.steps .step.active {
+  cursor: auto;
+  background: #6435c9 !important;
+}
+
+.ui.steps .step.active:after {
+  background: #6435c9 !important;
+}
+
+.ui.steps .step.active .title {
+  color: #fff !important;
+}
+
+.ui.ordered.steps .step.active:before,
+.ui.steps .active.step .icon {
+  color: #fff !important;
+}

@@ -1,0 +1,71 @@
+﻿@using DDPA.Commons.Results;
+@{
+    ViewData["Title"] = "Add Dataset";
+    var resultMsg = TempData["resultMsg"] ?? "";
+}
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/js/add-dataset.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/js/add-dataset.min.js"></script>
+    </environment>
+}
+
+@model AddDatasetViewModel
+<main>
+    <div class="ui one column grid">
+        <div class="row">
+            <div class="column">
+                <h4 class="ui top attached inverted header">
+                    Add Data Set
+                </h4>
+                <div class="ui attached segment">
+                    <div class="ui container segment">
+                        <div class="ui horizontal divider">
+                            <h4 class="ui blue header">
+                                <div class="content">
+                                    DATASET DETAILS
+                                </div>
+                            </h4>
+                        </div>
+                        <form id="addDataset_form" class="ui form" asp-controller="Maintenance" asp-action="AddDataset" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" autocomplete="off" novalidate="novalidate">
+                            <div class="two fields">
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Name *
+                                        </div>
+                                        <input asp-for="Name" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui labeled input">
+                                        <div class="ui inverted grey label">
+                                            Description *
+                                        </div>
+                                        <input asp-for="Description" type="text" class="validate" required />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ui divider"></div>
+                        <a asp-controller="Maintenance" asp-action="Dataset" class="ui large button">
+                            <i class="ban icon"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" form="addDataset_form" class="ui right floated large green button">
+                            <i class="check icon"></i>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="ui bottom attached message" id="pageMessage" hidden>
+                    <i class="close icon" onclick="$(this).parent().fadeOut();"></i>
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

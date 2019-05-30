@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+<div class="ui one column grid">
+    <div class="ui tiny breadcrumb">
+        <a asp-controller="Dashboard" asp-action="Index" class="section">Home</a>
+        <i class="right arrow icon divider"></i>
+        <div class="active section">Access Denied</div>
+    </div>
+</div>
+<div class="ui one column grid">
+    <div class="row">
+        <div class="column">
+            <div class="ui icon small red message" id="errormessage">
+                <i class="exclamation icon"></i>
+                <div class="content">
+                    <h5>"Kindly contact the network administrator if you think there has been an error."</h5>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+    </div>
+</div>
+<div class="column">
+    <div class="sixteen wide tablet eight wide computer column">
+        <img class="ui fluid image rounded" src="~/images/403img.png">
+    </div>
+</div>
