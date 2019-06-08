@@ -1,4 +1,76 @@
 describe('Deprecations', function() {
+	describe('Version 2.8.0', function() {
+		[
+			['Bar', 'bar'],
+			['Bubble', 'bubble'],
+			['Doughnut', 'doughnut'],
+			['Line', 'line'],
+			['PolarArea', 'polarArea'],
+			['Radar', 'radar'],
+			['Scatter', 'scatter']
+		].forEach(function(descriptor) {
+			var klass = descriptor[0];
+			var type = descriptor[1];
+
+			describe('Chart.' + klass, function() {
+				it('should be defined as a function', function() {
+					expect(typeof Chart[klass]).toBe('function');
+				});
+				it('should create a chart of type "' + type + '"', function() {
+					var chart = new Chart[klass]('foo', {data: {}});
+					expect(chart instanceof Chart.Controller).toBeTruthy();
+					expect(chart.config.type).toBe(type);
+				});
+			});
+		});
+
+		describe('Chart.Chart', function() {
+			it('should be defined as an alias to Chart', function() {
+				expect(Chart.Chart).toBe(Chart);
+			});
+		});
+
+		describe('Chart.helpers.aliasPixel', function() {
+			it('should be defined as a function', function() {
+				expect(typeof Chart.helpers.aliasPixel).toBe('function');
+			});
+		});
+
+		describe('Chart.LinearScaleBase', function() {
+			it('should be defined and inherit from Chart.Scale', function() {
+				expect(typeof Chart.LinearScaleBase).toBe('function');
+				expect(Chart.LinearScaleBase.prototype instanceof Chart.Scale).toBeTruthy();
+			});
+		});
+
+		describe('Chart.types', function() {
+			it('should be defined as an empty object', function() {
+				expect(Chart.types).toEqual({});
+			});
+		});
+
+		describe('Chart.helpers.configMerge', function() {
+			it('should be defined as a function', function() {
+				expect(typeof Chart.helpers.configMerge).toBe('function');
+			});
+		});
+
+		describe('Chart.helpers.scaleMerge', function() {
+			it('should be defined as a function', function() {
+				expect(typeof Chart.helpers.scaleMerge).toBe('function');
+			});
+		});
+	});
+
+	describe('Version 2.7.3', function() {
+		describe('Chart.layoutService', function() {
+			it('should be defined and an alias of Chart.layouts', function() {
+				expect(Chart.layoutService).toBeDefined();
+				expect(Chart.layoutService).toBe(Chart.layouts);
+			});
+		});
+	});
+
 	describe('Version 2.7.0', function() {
 		describe('Chart.Controller.update(duration, lazy)', function() {
 			it('should add an animation with the provided options', function() {
@@ -52,7 +124,6 @@ describe('Deprecations', function() {
 
 		describe('Chart.helpers.indexOf', function() {
 			it('should be defined and a function', function() {
-				expect(Chart.helpers.indexOf).toBeDefined();
 				expect(typeof Chart.helpers.indexOf).toBe('function');
 			});
 			it('should returns the correct index', function() {
@@ -93,7 +164,6 @@ describe('Deprecations', function() {
 
 		describe('Chart.helpers.drawRoundedRectangle', function() {
 			it('should be defined and a function', function() {
-				expect(Chart.helpers.drawRoundedRectangle).toBeDefined();
 				expect(typeof Chart.helpers.drawRoundedRectangle).toBe('function');
 			});
 			it('should call Chart.helpers.canvas.roundedRect', function() {
@@ -104,14 +174,12 @@ describe('Deprecations', function() {
 
 				var calls = ctx.getCalls();
 				expect(calls[0]).toEqual({name: 'beginPath', args: []});
-				expect(calls[calls.length - 1]).toEqual({name: 'closePath', args: []});
 				expect(Chart.helpers.canvas.roundedRect).toHaveBeenCalledWith(ctx, 10, 20, 30, 40, 5);
 			});
 		});
 
 		describe('Chart.helpers.addEvent', function() {
 			it('should be defined and a function', function() {
-				expect(Chart.helpers.addEvent).toBeDefined();
 				expect(typeof Chart.helpers.addEvent).toBe('function');
 			});
 			it('should correctly add event listener', function() {
@@ -124,7 +192,6 @@ describe('Deprecations', function() {
 
 		describe('Chart.helpers.removeEvent', function() {
 			it('should be defined and a function', function() {
-				expect(Chart.helpers.removeEvent).toBeDefined();
 				expect(typeof Chart.helpers.removeEvent).toBe('function');
 			});
 			it('should correctly remove event listener', function() {
@@ -302,8 +369,8 @@ describe('Deprecations', function() {
 					'afterLayout'
 				];
 
-				var override = Chart.layoutService.update;
-				Chart.layoutService.update = function() {
+				var override = Chart.layouts.update;
+				Chart.layouts.update = function() {
 					sequence.push('layoutUpdate');
 					override.apply(this, arguments);
 				};
@@ -370,6 +437,24 @@ describe('Deprecations', function() {
 			it('should be defined and an alias of Chart.plugins', function() {
 				expect(Chart.pluginService).toBeDefined();
 				expect(Chart.pluginService).toBe(Chart.plugins);
+			});
+		});
+
+		describe('Chart.Legend', function() {
+			it('should be defined and an instance of Chart.Element', function() {
+				var legend = new Chart.Legend({});
+				expect(Chart.Legend).toBeDefined();
+				expect(legend).not.toBe(undefined);
+				expect(legend instanceof Chart.Element).toBeTruthy();
+			});
+		});
+
+		describe('Chart.Title', function() {
+			it('should be defined and an instance of Chart.Element', function() {
+				var title = new Chart.Title({});
+				expect(Chart.Title).toBeDefined();
+				expect(title).not.toBe(undefined);
+				expect(title instanceof Chart.Element).toBeTruthy();
 			});
 		});
 	});

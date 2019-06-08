@@ -7,10 +7,10 @@
     <PackageId>DDPA.SQL.Entities</PackageId>
     <RootNamespace>DDPA.SQL.Entities</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RuntimeIdentifiers>win7-x64;win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>  <ItemGroup>
     <ProjectReference Include="..\..\ddpa-core\DDPA.Commons\DDPA.Commons.csproj" />

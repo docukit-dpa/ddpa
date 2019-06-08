@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OpenIddict.Core;
-using OpenIddict.Models;
 using DDPA.Attributes;
 using DDPA.Service;
 using DDPA.Validation;
@@ -26,8 +24,6 @@ using Serilog;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using Pomelo.EntityFrameworkCore.MySql;
-using MySql.Data.MySqlClient;
 using DDPA.DTO;
 
 namespace DDPA.Web
@@ -74,17 +70,6 @@ namespace DDPA.Web
                     builder => builder.WithOrigins("http://localhost"));
             });
 
-            services.Configure<SMTPOptions>(Configuration.GetSection("SmtpOptions"));
-            //services
-            //    .AddMvc()
-            //    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
-
-            //// Localization
-            //services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-            services.AddOpenIddict()
-                .AddEntityFrameworkCoreStores<ApplicationDbContext>();
-
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.
@@ -120,14 +105,39 @@ namespace DDPA.Web
                 o.Tokens.EmailConfirmationTokenProvider = EmailConfirmationTokenProviderName;
             });
 
-            services.AddDistributedMemoryCache();
+            // Register the OpenIddict services.
+            services.AddOpenIddict()
+                .AddCore(options =>
+                {
+                    // Configure OpenIddict to use the Entity Framework Core stores and entities.
+                    options.UseEntityFrameworkCore().UseDbContext<ApplicationDbContext>();
+                })
+                .AddServer(options =>
+                {
+                    // Register the ASP.NET Core MVC binder used by OpenIddict.
+                    // Note: if you don't call this method, you won't be able to
+                    // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
+                    options.UseMvc();
+
+                    // Enable the token endpoint (required to use the password flow).
+                    options.EnableTokenEndpoint("/connect/token");
+
+                    // Allow client applications to use the grant_type=password flow.
+                    options.AllowPasswordFlow();
+
+                    // During development, you can disable the HTTPS requirement.
+                    options.DisableHttpsRequirement();
+
+                    // Accept token requests that don't specify a client_id.
+                    options.AcceptAnonymousClients();
+                })
+                .AddValidation();
+
             // Add Session
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".DDPASessionCookies";
                 options.IdleTimeout = TimeSpan.FromHours(1);
-                //options.IdleTimeout = TimeSpan.FromSeconds(10);
-                //options.Cookie.HttpOnly = true;
             });
 
             services.AddAuthentication();
@@ -154,7 +164,7 @@ namespace DDPA.Web
                 options.SupportedUICultures = supportedCultures;
 
             });
-            services.AddDistributedMemoryCache();
+
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
@@ -172,6 +182,9 @@ namespace DDPA.Web
 
             services.AddMemoryCache();
 
+            services.Configure<SMTPOptions>(Configuration.GetSection("SmtpOptions"));
+            services.Configure<DDPAOptions>(Configuration.GetSection("DDPAOptions"));
+
             // Main Repository
             services.AddScoped<IRepository, EFRepository<ApplicationDbContext>>();
 
@@ -184,7 +197,6 @@ namespace DDPA.Web
             services.AddScoped<IMaintenanceService, MaintenanceService>();
             services.AddScoped<IUserValidation, UserValidation>();
             services.AddScoped<IValidationService, ValidationService>();
-            services.Configure<DDPAOptions>(Configuration.GetSection("DDPAOptions"));
             services.AddScoped<IDatasetService, DatasetService>();
             services.AddScoped<ISummaryService, SummaryService>();
             services.AddScoped<IApprovalService, ApprovalService>();
