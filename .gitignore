@@ -208,11 +208,3 @@ FakesAssemblies/
 # Ignore min under js and css
 src/ddpa-web/DDPA.Web/wwwroot/js/**/*.min.js
 src/ddpa-web/DDPA.Web/wwwroot/css/**/*.min.css
-
-# Ignore FM output
-src/ddpa-web/DDPA.Web/wwwroot/images/title-bg.png
-src/ddpa-web/DDPA.Web/wwwroot/images/template-bg.png
-src/ddpa-web/DDPA.Web/wwwroot/images/sidenav-bg.png
-src/ddpa-web/DDPA.Web/wwwroot/images/pic.png
-src/ddpa-web/DDPA.Web/wwwroot/images/logo.png
-src/ddpa-web/DDPA.Web/wwwroot/images/loginbg.png
