@@ -6,63 +6,9 @@ var color = require('chartjs-color');
 var defaults = require('./core.defaults');
 var helpers = require('../helpers/index');
 
-module.exports = function(Chart) {
+module.exports = function() {
 
 	// -- Basic js utility methods
-
-	helpers.configMerge = function(/* objects ... */) {
-		return helpers.merge(helpers.clone(arguments[0]), [].slice.call(arguments, 1), {
-			merger: function(key, target, source, options) {
-				var tval = target[key] || {};
-				var sval = source[key];
-
-				if (key === 'scales') {
-					// scale config merging is complex. Add our own function here for that
-					target[key] = helpers.scaleMerge(tval, sval);
-				} else if (key === 'scale') {
-					// used in polar area & radar charts since there is only one scale
-					target[key] = helpers.merge(tval, [Chart.scaleService.getScaleDefaults(sval.type), sval]);
-				} else {
-					helpers._merger(key, target, source, options);
-				}
-			}
-		});
-	};
-
-	helpers.scaleMerge = function(/* objects ... */) {
-		return helpers.merge(helpers.clone(arguments[0]), [].slice.call(arguments, 1), {
-			merger: function(key, target, source, options) {
-				if (key === 'xAxes' || key === 'yAxes') {
-					var slen = source[key].length;
-					var i, type, scale;
-
-					if (!target[key]) {
-						target[key] = [];
-					}
-
-					for (i = 0; i < slen; ++i) {
-						scale = source[key][i];
-						type = helpers.valueOrDefault(scale.type, key === 'xAxes' ? 'category' : 'linear');
-
-						if (i >= target[key].length) {
-							target[key].push({});
-						}
-
-						if (!target[key][i].type || (scale.type && scale.type !== target[key][i].type)) {
-							// new/untyped scale or type changed: let's apply the new defaults
-							// then merge source scale to correctly overwrite the defaults.
-							helpers.merge(target[key][i], [Chart.scaleService.getScaleDefaults(type), scale]);
-						} else {
-							// scales type are the same
-							helpers.merge(target[key][i], scale);
-						}
-					}
-				} else {
-					helpers._merger(key, target, source, options);
-				}
-			}
-		});
-	};
 
 	helpers.where = function(collection, filterCallback) {
 		if (helpers.isArray(collection) && Array.prototype.filter) {
@@ -159,7 +105,13 @@ module.exports = function(Chart) {
 			return Math.log10(x);
 		} :
 		function(x) {
-			return Math.log(x) / Math.LN10;
+			var exponent = Math.log(x) * Math.LOG10E; // Math.LOG10E = 1 / Math.LN10.
+			// Check for whole powers of 10,
+			// which due to floating point rounding error should be corrected.
+			var powerOf10 = Math.round(exponent);
+			var isPowerOf10 = x === Math.pow(10, powerOf10);
+
+			return isPowerOf10 ? powerOf10 : exponent;
 		};
 	helpers.toRadians = function(degrees) {
 		return degrees * (Math.PI / 180);
@@ -167,6 +119,27 @@ module.exports = function(Chart) {
 	helpers.toDegrees = function(radians) {
 		return radians * (180 / Math.PI);
 	};
+
+	/**
+	 * Returns the number of decimal places
+	 * i.e. the number of digits after the decimal point, of the value of this Number.
+	 * @param {number} x - A number.
+	 * @returns {number} The number of decimal places.
+	 * @private
+	 */
+	helpers._decimalPlaces = function(x) {
+		if (!helpers.isFinite(x)) {
+			return;
+		}
+		var e = 1;
+		var p = 0;
+		while (Math.round(x * e) / e !== x) {
+			e *= 10;
+			p++;
+		}
+		return p;
+	};
+
 	// Gets the angle from vertical upright to the point about a centre.
 	helpers.getAngleFromPoint = function(centrePoint, anglePoint) {
 		var distanceFromXCenter = anglePoint.x - centrePoint.x;
@@ -187,9 +160,31 @@ module.exports = function(Chart) {
 	helpers.distanceBetweenPoints = function(pt1, pt2) {
 		return Math.sqrt(Math.pow(pt2.x - pt1.x, 2) + Math.pow(pt2.y - pt1.y, 2));
 	};
+
+	/**
+	 * Provided for backward compatibility, not available anymore
+	 * @function Chart.helpers.aliasPixel
+	 * @deprecated since version 2.8.0
+	 * @todo remove at version 3
+	 */
 	helpers.aliasPixel = function(pixelWidth) {
 		return (pixelWidth % 2 === 0) ? 0 : 0.5;
 	};
+
+	/**
+	 * Returns the aligned pixel value to avoid anti-aliasing blur
+	 * @param {Chart} chart - The chart instance.
+	 * @param {number} pixel - A pixel value.
+	 * @param {number} width - The width of the element.
+	 * @returns {number} The aligned pixel value.
+	 * @private
+	 */
+	helpers._alignPixel = function(chart, pixel, width) {
+		var devicePixelRatio = chart.currentDevicePixelRatio;
+		var halfWidth = width / 2;
+		return Math.round((pixel - halfWidth) * devicePixelRatio) / devicePixelRatio + halfWidth;
+	};
+
 	helpers.splineCurve = function(firstPoint, middlePoint, afterPoint, t) {
 		// Props to Rob Spencer at scaled innovation for his post on splining between points
 		// http://scaledinnovation.com/analytics/splines/aboutSplines.html
@@ -356,7 +351,7 @@ module.exports = function(Chart) {
 
 		return niceFraction * Math.pow(10, exponent);
 	};
-	// Request animation polyfill - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+	// Request animation polyfill - https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
 	helpers.requestAnimFrame = (function() {
 		if (typeof window === 'undefined') {
 			return function(callback) {
@@ -376,7 +371,7 @@ module.exports = function(Chart) {
 	helpers.getRelativePosition = function(evt, chart) {
 		var mouseX, mouseY;
 		var e = evt.originalEvent || evt;
-		var canvas = evt.currentTarget || evt.srcElement;
+		var canvas = evt.target || evt.srcElement;
 		var boundingRect = canvas.getBoundingClientRect();
 
 		var touches = e.touches;
@@ -391,7 +386,7 @@ module.exports = function(Chart) {
 
 		// Scale mouse coordinates into canvas coordinates
 		// by following the pattern laid out by 'jerryj' in the comments of
-		// http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+		// https://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
 		var paddingLeft = parseFloat(helpers.getStyle(canvas, 'padding-left'));
 		var paddingTop = parseFloat(helpers.getStyle(canvas, 'padding-top'));
 		var paddingRight = parseFloat(helpers.getStyle(canvas, 'padding-right'));
@@ -436,14 +431,16 @@ module.exports = function(Chart) {
 		return value !== undefined && value !== null && value !== 'none';
 	}
 
-	// Private helper to get a constraint dimension
-	// @param domNode : the node to check the constraint on
-	// @param maxStyle : the style that defines the maximum for the direction we are using (maxWidth / maxHeight)
-	// @param percentageProperty : property of parent to use when calculating width as a percentage
-	// @see http://www.nathanaeljones.com/blog/2013/reading-max-width-cross-browser
+	/**
+	 * Returns the max width or height of the given DOM node in a cross-browser compatible fashion
+	 * @param {HTMLElement} domNode - the node to check the constraint on
+	 * @param {string} maxStyle - the style that defines the maximum for the direction we are using ('max-width' / 'max-height')
+	 * @param {string} percentageProperty - property of parent to use when calculating width as a percentage
+	 * @see {@link https://www.nathanaeljones.com/blog/2013/reading-max-width-cross-browser}
+	 */
 	function getConstraintDimension(domNode, maxStyle, percentageProperty) {
 		var view = document.defaultView;
-		var parentNode = domNode.parentNode;
+		var parentNode = helpers._getParentNode(domNode);
 		var constrainedNode = view.getComputedStyle(domNode)[maxStyle];
 		var constrainedContainer = view.getComputedStyle(parentNode)[maxStyle];
 		var hasCNode = isConstrainedValue(constrainedNode);
@@ -466,27 +463,49 @@ module.exports = function(Chart) {
 	helpers.getConstraintHeight = function(domNode) {
 		return getConstraintDimension(domNode, 'max-height', 'clientHeight');
 	};
+	/**
+	 * @private
+ 	 */
+	helpers._calculatePadding = function(container, padding, parentDimension) {
+		padding = helpers.getStyle(container, padding);
+
+		return padding.indexOf('%') > -1 ? parentDimension * parseInt(padding, 10) / 100 : parseInt(padding, 10);
+	};
+	/**
+	 * @private
+	 */
+	helpers._getParentNode = function(domNode) {
+		var parent = domNode.parentNode;
+		if (parent && parent.toString() === '[object ShadowRoot]') {
+			parent = parent.host;
+		}
+		return parent;
+	};
 	helpers.getMaximumWidth = function(domNode) {
-		var container = domNode.parentNode;
+		var container = helpers._getParentNode(domNode);
 		if (!container) {
 			return domNode.clientWidth;
 		}
 
-		var paddingLeft = parseInt(helpers.getStyle(container, 'padding-left'), 10);
-		var paddingRight = parseInt(helpers.getStyle(container, 'padding-right'), 10);
-		var w = container.clientWidth - paddingLeft - paddingRight;
+		var clientWidth = container.clientWidth;
+		var paddingLeft = helpers._calculatePadding(container, 'padding-left', clientWidth);
+		var paddingRight = helpers._calculatePadding(container, 'padding-right', clientWidth);
+
+		var w = clientWidth - paddingLeft - paddingRight;
 		var cw = helpers.getConstraintWidth(domNode);
 		return isNaN(cw) ? w : Math.min(w, cw);
 	};
 	helpers.getMaximumHeight = function(domNode) {
-		var container = domNode.parentNode;
+		var container = helpers._getParentNode(domNode);
 		if (!container) {
 			return domNode.clientHeight;
 		}
 
-		var paddingTop = parseInt(helpers.getStyle(container, 'padding-top'), 10);
-		var paddingBottom = parseInt(helpers.getStyle(container, 'padding-bottom'), 10);
-		var h = container.clientHeight - paddingTop - paddingBottom;
+		var clientHeight = container.clientHeight;
+		var paddingTop = helpers._calculatePadding(container, 'padding-top', clientHeight);
+		var paddingBottom = helpers._calculatePadding(container, 'padding-bottom', clientHeight);
+
+		var h = clientHeight - paddingTop - paddingBottom;
 		var ch = helpers.getConstraintHeight(domNode);
 		return isNaN(ch) ? h : Math.min(h, ch);
 	};
@@ -496,7 +515,7 @@ module.exports = function(Chart) {
 			document.defaultView.getComputedStyle(el, null).getPropertyValue(property);
 	};
 	helpers.retinaScale = function(chart, forceRatio) {
-		var pixelRatio = chart.currentDevicePixelRatio = forceRatio || window.devicePixelRatio || 1;
+		var pixelRatio = chart.currentDevicePixelRatio = forceRatio || (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
 		if (pixelRatio === 1) {
 			return;
 		}
@@ -512,8 +531,10 @@ module.exports = function(Chart) {
 		// If no style has been set on the canvas, the render size is used as display size,
 		// making the chart visually bigger, so let's enforce it to the "correct" values.
 		// See https://github.com/chartjs/Chart.js/issues/3575
-		canvas.style.height = height + 'px';
-		canvas.style.width = width + 'px';
+		if (!canvas.style.height && !canvas.style.width) {
+			canvas.style.height = height + 'px';
+			canvas.style.width = width + 'px';
+		}
 	};
 	// -- Canvas methods
 	helpers.fontString = function(pixelSize, fontStyle, fontFamily) {
@@ -596,7 +617,7 @@ module.exports = function(Chart) {
 
 	helpers.getHoverColor = function(colorValue) {
 		/* global CanvasPattern */
-		return (colorValue instanceof CanvasPattern) ?
+		return (colorValue instanceof CanvasPattern || colorValue instanceof CanvasGradient) ?
 			colorValue :
 			helpers.color(colorValue).saturate(0.5).darken(0.1).rgbString();
 	};

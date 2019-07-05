@@ -6,172 +6,6 @@ describe('Core helper tests', function() {
 		helpers = window.Chart.helpers;
 	});
 
-	it('should merge a normal config without scales', function() {
-		var baseConfig = {
-			valueProp: 5,
-			arrayProp: [1, 2, 3, 4, 5, 6],
-			objectProp: {
-				prop1: 'abc',
-				prop2: 56
-			}
-		};
-
-		var toMerge = {
-			valueProp2: null,
-			arrayProp: ['a', 'c'],
-			objectProp: {
-				prop1: 'c',
-				prop3: 'prop3'
-			}
-		};
-
-		var merged = helpers.configMerge(baseConfig, toMerge);
-		expect(merged).toEqual({
-			valueProp: 5,
-			valueProp2: null,
-			arrayProp: ['a', 'c'],
-			objectProp: {
-				prop1: 'c',
-				prop2: 56,
-				prop3: 'prop3'
-			}
-		});
-	});
-
-	it('should merge scale configs', function() {
-		var baseConfig = {
-			scales: {
-				prop1: {
-					abc: 123,
-					def: '456'
-				},
-				prop2: 777,
-				yAxes: [{
-					type: 'linear',
-				}, {
-					type: 'log'
-				}]
-			}
-		};
-
-		var toMerge = {
-			scales: {
-				prop1: {
-					def: 'bbb',
-					ghi: 78
-				},
-				prop2: null,
-				yAxes: [{
-					type: 'linear',
-					axisProp: 456
-				}, {
-					// pulls in linear default config since axis type changes
-					type: 'linear',
-					position: 'right'
-				}, {
-					// Pulls in linear default config since axis not in base
-					type: 'linear'
-				}]
-			}
-		};
-
-		var merged = helpers.configMerge(baseConfig, toMerge);
-		expect(merged).toEqual({
-			scales: {
-				prop1: {
-					abc: 123,
-					def: 'bbb',
-					ghi: 78
-				},
-				prop2: null,
-				yAxes: [{
-					type: 'linear',
-					axisProp: 456
-				}, {
-					display: true,
-
-					gridLines: {
-						color: 'rgba(0, 0, 0, 0.1)',
-						drawBorder: true,
-						drawOnChartArea: true,
-						drawTicks: true, // draw ticks extending towards the label
-						tickMarkLength: 10,
-						lineWidth: 1,
-						offsetGridLines: false,
-						display: true,
-						zeroLineColor: 'rgba(0,0,0,0.25)',
-						zeroLineWidth: 1,
-						zeroLineBorderDash: [],
-						zeroLineBorderDashOffset: 0.0,
-						borderDash: [],
-						borderDashOffset: 0.0
-					},
-					position: 'right',
-					offset: false,
-					scaleLabel: Chart.defaults.scale.scaleLabel,
-					ticks: {
-						beginAtZero: false,
-						minRotation: 0,
-						maxRotation: 50,
-						mirror: false,
-						padding: 0,
-						reverse: false,
-						display: true,
-						callback: merged.scales.yAxes[1].ticks.callback, // make it nicer, then check explicitly below
-						autoSkip: true,
-						autoSkipPadding: 0,
-						labelOffset: 0,
-						minor: {},
-						major: {},
-					},
-					type: 'linear'
-				}, {
-					display: true,
-
-					gridLines: {
-						color: 'rgba(0, 0, 0, 0.1)',
-						drawBorder: true,
-						drawOnChartArea: true,
-						drawTicks: true, // draw ticks extending towards the label,
-						tickMarkLength: 10,
-						lineWidth: 1,
-						offsetGridLines: false,
-						display: true,
-						zeroLineColor: 'rgba(0,0,0,0.25)',
-						zeroLineWidth: 1,
-						zeroLineBorderDash: [],
-						zeroLineBorderDashOffset: 0.0,
-						borderDash: [],
-						borderDashOffset: 0.0
-					},
-					position: 'left',
-					offset: false,
-					scaleLabel: Chart.defaults.scale.scaleLabel,
-					ticks: {
-						beginAtZero: false,
-						minRotation: 0,
-						maxRotation: 50,
-						mirror: false,
-						padding: 0,
-						reverse: false,
-						display: true,
-						callback: merged.scales.yAxes[2].ticks.callback, // make it nicer, then check explicitly below
-						autoSkip: true,
-						autoSkipPadding: 0,
-						labelOffset: 0,
-						minor: {},
-						major: {},
-					},
-					type: 'linear'
-				}]
-			}
-		});
-
-		// Are these actually functions
-		expect(merged.scales.yAxes[1].ticks.callback).toEqual(jasmine.any(Function));
-		expect(merged.scales.yAxes[2].ticks.callback).toEqual(jasmine.any(Function));
-	});
-
 	it('should filter an array', function() {
 		var data = [-10, 0, 6, 0, 7];
 		var callback = function(item) {
@@ -194,8 +28,12 @@ describe('Core helper tests', function() {
 
 	it('should do a log10 operation', function() {
 		expect(helpers.log10(0)).toBe(-Infinity);
-		expect(helpers.log10(1)).toBe(0);
-		expect(helpers.log10(1000)).toBeCloseTo(3, 1e-9);
+
+		// Check all allowed powers of 10, which should return integer values
+		var maxPowerOf10 = Math.floor(helpers.log10(Number.MAX_VALUE));
+		for (var i = 0; i < maxPowerOf10; i += 1) {
+			expect(helpers.log10(Math.pow(10, i))).toBe(i);
+		}
 	});
 
 	it('should correctly determine if two numbers are essentially equal', function() {
@@ -232,6 +70,17 @@ describe('Core helper tests', function() {
 		expect(helpers.toRadians(90)).toBe(0.5 * Math.PI);
 		expect(helpers.toDegrees(Math.PI)).toBe(180);
 		expect(helpers.toDegrees(Math.PI * 3 / 2)).toBe(270);
+	});
+
+	it('should get the correct number of decimal places', function() {
+		expect(helpers._decimalPlaces(100)).toBe(0);
+		expect(helpers._decimalPlaces(1)).toBe(0);
+		expect(helpers._decimalPlaces(0)).toBe(0);
+		expect(helpers._decimalPlaces(0.01)).toBe(2);
+		expect(helpers._decimalPlaces(-0.01)).toBe(2);
+		expect(helpers._decimalPlaces('1')).toBe(undefined);
+		expect(helpers._decimalPlaces('')).toBe(undefined);
+		expect(helpers._decimalPlaces(undefined)).toBe(undefined);
 	});
 
 	it('should get an angle from a point', function() {
@@ -564,6 +413,31 @@ describe('Core helper tests', function() {
 		document.body.removeChild(div);
 	});
 
+	it ('should get the maximum width and height for a node in a ShadowRoot', function() {
+		// Create div with fixed size as a test bed
+		var div = document.createElement('div');
+		div.style.width = '200px';
+		div.style.height = '300px';
+
+		document.body.appendChild(div);
+
+		if (!div.attachShadow) {
+			// Shadow DOM is not natively supported
+			return;
+		}
+
+		var shadow = div.attachShadow({mode: 'closed'});
+
+		// Create the div we want to get the max size for
+		var innerDiv = document.createElement('div');
+		shadow.appendChild(innerDiv);
+
+		expect(helpers.getMaximumWidth(innerDiv)).toBe(200);
+		expect(helpers.getMaximumHeight(innerDiv)).toBe(300);
+
+		document.body.removeChild(div);
+	});
+
 	it ('should get the maximum width of a node that has a max-width style', function() {
 		// Create div with fixed size as a test bed
 		var div = document.createElement('div');
@@ -725,6 +599,53 @@ describe('Core helper tests', function() {
 		document.body.removeChild(div);
 	});
 
+	it ('should leave styled height and width on canvas if explicitly set', function() {
+		var chart = window.acquireChart({}, {
+			canvas: {
+				height: 200,
+				width: 200,
+				style: 'height: 400px; width: 400px;'
+			}
+		});
+
+		helpers.retinaScale(chart, true);
+
+		var canvas = chart.canvas;
+
+		expect(canvas.style.height).toBe('400px');
+		expect(canvas.style.width).toBe('400px');
+	});
+
+	it ('Should get padding of parent as number (pixels) when defined as percent (returns incorrectly in IE11)', function() {
+
+		// Create div with fixed size as a test bed
+		var div = document.createElement('div');
+		div.style.width = '300px';
+		div.style.height = '300px';
+		document.body.appendChild(div);
+
+		// Inner DIV to have 5% padding of parent
+		var innerDiv = document.createElement('div');
+
+		div.appendChild(innerDiv);
+
+		var canvas = document.createElement('canvas');
+		innerDiv.appendChild(canvas);
+
+		// No padding
+		expect(helpers.getMaximumWidth(canvas)).toBe(300);
+
+		// test with percentage
+		innerDiv.style.padding = '5%';
+		expect(helpers.getMaximumWidth(canvas)).toBe(270);
+
+		// test with pixels
+		innerDiv.style.padding = '10px';
+		expect(helpers.getMaximumWidth(canvas)).toBe(280);
+
+		document.body.removeChild(div);
+	});
+
 	describe('Color helper', function() {
 		function isColorInstance(obj) {
 			return typeof obj === 'object' && obj.hasOwnProperty('values') && obj.values.hasOwnProperty('rgb');
@@ -759,6 +680,13 @@ describe('Core helper tests', function() {
 
 				done();
 			};
+		});
+
+		it('should return a CanvasGradient when called with a CanvasGradient', function() {
+			var context = document.createElement('canvas').getContext('2d');
+			var gradient = context.createLinearGradient(0, 1, 2, 3);
+
+			expect(helpers.getHoverColor(gradient) instanceof CanvasGradient).toBe(true);
 		});
 
 		it('should return a modified version of color when called with a color', function() {
