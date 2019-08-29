@@ -13,7 +13,7 @@ After cloning the Project you should be able to run it in your machine with the 
 - MySQL version 8.0.15.0([download link here](https://downloads.mysql.com/archives/installer/))
 
 ### Installer
-- docukit DP App([download link here](https://www.iwv.works/data-protection-app))
+- docukit DP App([download link here](https://www.dataprotect.sg/data-protect-download/))
 
 ### Running
 After installing the prerequisites, follow the steps below for the Project to run in your machine.
